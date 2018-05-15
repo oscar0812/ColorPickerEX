@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        app:srcCompat="@color/colorPrimary"
+        android:id="@+id/separatorImageView"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_below="@+id/currentColorImageView"
+        android:layout_centerHorizontal="true"
+        android:layout_height="2dp" />
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/multiple_actions_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fab_addButtonColorNormal="@color/white"
+        app:fab_addButtonColorPressed="@color/white_pressed"
+        app:fab_addButtonSize="mini"
+        app:fab_addButtonPlusIconColor="@color/half_black"
+        app:fab_expandDirection="down"
+        app:fab_labelStyle="@style/menu_labels_style"
+        android:background="@color/colorTransparent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/optionsFab"
+            app:fab_title="Rotate"
+            app:fab_colorNormal="@color/white"
+            app:fab_colorPressed="@color/white_pressed"
+            app:fab_size="mini"/>
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+    <ImageView
+        app:srcCompat="@color/colorTransparent"
+        android:id="@+id/currentColorImageView"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/separatorImageView"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_margin="5dp" />
+
+    <com.bittle.colorpicker.ImageView.CustomImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/mainImageView"
+        android:src="@color/colorTransparent"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/separatorImageView" />
+
+
+</RelativeLayout>

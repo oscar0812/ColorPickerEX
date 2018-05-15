@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_colo_info_dialog"
+    android:layout_width="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.bittle.colorpicker.Dialogs.ColorInfoDialog"
+    android:layout_height="350dp">
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:srcCompat="@color/colorTransparent"
+        android:id="@+id/mainColorImageView"
+        android:background="@color/colorTransparent"
+        android:layout_below="@+id/touchedColorTitle"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lighterTextViewDialog"
+        android:textAppearance="@android:style/TextAppearance.Material"
+        android:textColor="@android:color/background_dark"
+        android:textAlignment="center"
+        android:text="25% lighter"
+        android:layout_below="@+id/lighterImageViewDialog"
+        android:layout_alignParentStart="true"
+        android:background="@color/colorTransparent" />
+
+    <TextView
+        android:text="Touched Color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/touchedColorTitle"
+        android:textAppearance="@android:style/TextAppearance.Material"
+        android:textColor="@android:color/background_dark"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorTransparent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/invertedTextViewDialog"
+        android:textAppearance="@android:style/TextAppearance.Material"
+        android:textColor="@android:color/background_dark"
+        android:textAlignment="center"
+        android:text="inverted"
+        android:background="@color/colorTransparent"
+        android:layout_below="@+id/invertedImageViewDialog"
+        android:layout_alignEnd="@+id/invertedImageViewDialog"
+        android:layout_alignBottom="@+id/darkerTextViewDialog" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:srcCompat="@color/colorTransparent"
+        android:id="@+id/darkerImageViewDialog"
+        android:background="@color/colorTransparent"
+        android:layout_below="@+id/currentHexTextViewDialog"
+        android:layout_alignStart="@+id/mainColorImageView"
+        android:layout_above="@+id/lighterTextViewDialog" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:srcCompat="@color/colorTransparent"
+        android:id="@+id/invertedImageViewDialog"
+        android:background="@color/colorTransparent"
+        android:layout_below="@+id/currentHexTextViewDialog"
+        android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:srcCompat="@color/colorTransparent"
+        android:id="@+id/lighterImageViewDialog"
+        android:background="@color/colorTransparent"
+        android:layout_below="@+id/currentHexTextViewDialog"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/lighterTextViewDialog" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/currentHexTextViewDialog"
+        android:textAppearance="@android:style/TextAppearance.Material"
+        android:textColor="@android:color/background_dark"
+        android:textAlignment="center"
+        android:background="@color/colorTransparent"
+        android:layout_below="@+id/mainColorImageView"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="30dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/darkerTextViewDialog"
+        android:textAppearance="@android:style/TextAppearance.Material"
+        android:textColor="@android:color/background_dark"
+        android:textAlignment="center"
+        android:text="25% darker"
+        android:background="@color/colorTransparent"
+        android:layout_below="@+id/darkerImageViewDialog"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:srcCompat="@color/colorTransparent"
+        android:id="@+id/dominantImageViewDialog"
+        android:background="@color/colorTransparent"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/darkerTextViewDialog"
+        android:layout_toStartOf="@+id/touchedColorTitle" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dominantTextViewDialog"
+        android:textAppearance="@android:style/TextAppearance.Material"
+        android:textColor="@android:color/background_dark"
+        android:textAlignment="center"
+        android:text="Dominant Color"
+        android:background="@color/colorTransparent"
+        android:layout_below="@+id/dominantImageViewDialog"
+        android:layout_toStartOf="@+id/darkerImageViewDialog" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:srcCompat="@color/colorTransparent"
+        android:id="@+id/averageImageViewDialog"
+        android:background="@color/colorTransparent"
+        android:layout_above="@+id/dominantTextViewDialog"
+        android:layout_toEndOf="@+id/touchedColorTitle" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/averageTextViewDialog"
+        android:textAppearance="@android:style/TextAppearance.Material"
+        android:textColor="@android:color/background_dark"
+        android:textAlignment="center"
+        android:text="Average Color"
+        android:background="@color/colorTransparent"
+        android:layout_below="@+id/averageImageViewDialog"
+        android:layout_toEndOf="@+id/darkerImageViewDialog" />
+
+</RelativeLayout>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_convert_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.bittle.colorpicker.ConvertMainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/secondConvert"
+        android:layout_below="@+id/firstConvert"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/underline"
+        android:layout_marginBottom="5dp">
+
+        <TextView
+            android:text="Color-Integer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2convert"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@color/dark_grey"
+            android:elevation="21dp"
+            android:gravity="center"
+            tools:textAlignment="center"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="Color-Hex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/intColorTextBoxConvert"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@color/dark_grey"
+            android:elevation="21dp"
+            android:gravity="center"
+            tools:textAlignment="center"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/firstConvert"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/underline"
+        android:layout_marginBottom="5dp">
+
+        <TextView
+            android:text="Color-Hex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView1convert"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@color/dark_grey"
+            android:elevation="21dp"
+            android:gravity="center"
+            tools:textAlignment="center"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="Color-Hex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/hexTextBoxConvert"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@color/dark_grey"
+            android:elevation="21dp"
+            android:gravity="center"
+            tools:textAlignment="center"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/thirdConvert"
+        android:layout_below="@+id/secondConvert"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/underline"
+        android:layout_marginBottom="5dp">
+
+        <TextView
+            android:text="Color-RGB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView3convert"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@color/dark_grey"
+            android:elevation="21dp"
+            android:gravity="center"
+            tools:textAlignment="center"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="Color-Hex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rgbTextBoxConvert"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@color/dark_grey"
+            android:elevation="21dp"
+            android:gravity="center"
+            tools:textAlignment="center"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fourthConvert"
+        android:layout_below="@+id/thirdConvert"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/underline"
+        android:layout_marginBottom="5dp">
+
+        <TextView
+            android:text="Color-Smali"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView4convert"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@color/dark_grey"
+            android:elevation="21dp"
+            android:gravity="center"
+            tools:textAlignment="center"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="Color-Hex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/smaliColorTextBoxConvert"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@color/dark_grey"
+            android:elevation="21dp"
+            android:gravity="center"
+            tools:textAlignment="center"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fifthConvert"
+        android:layout_below="@+id/fourthConvert"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/underline">
+
+        <TextView
+            android:text="Color-Origin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView5convert"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@color/dark_grey"
+            android:elevation="21dp"
+            android:gravity="center"
+            tools:textAlignment="center"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="Color-Hex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/originTextBoxConvert"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@color/dark_grey"
+            android:elevation="21dp"
+            android:gravity="center"
+            tools:textAlignment="center"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:text="Close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/closeTextViewConvert"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textColor="@android:color/holo_blue_bright"
+        android:elevation="21dp"
+        android:gravity="center"
+        tools:textAlignment="center"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="normal|bold"
+        android:layout_below="@+id/fifthConvert"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp" />
+
+    <TextView
+        android:text="Copy All"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/copyAllTextViewConvert"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textColor="@android:color/holo_blue_bright"
+        android:elevation="21dp"
+        android:gravity="center"
+        tools:textAlignment="center"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="normal|bold"
+        android:layout_alignBaseline="@+id/closeTextViewConvert"
+        android:layout_alignBottom="@+id/closeTextViewConvert"
+        android:layout_alignParentStart="true" />
+
+</RelativeLayout>
