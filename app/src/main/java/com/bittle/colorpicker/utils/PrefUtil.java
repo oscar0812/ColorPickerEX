@@ -14,7 +14,7 @@ public class PrefUtil {
     private static final String PREFS_NAME = "HISTORY_FILE";
     private static final String CURRENT_INT = "CURRENT_INT";
     private static final int NUM_OF_ENTRIES_TO_SAVE = 40;
-    public static final int MIN_NUM_OF_ENTRIES = NUM_OF_ENTRIES_TO_SAVE/2;
+    public static final int MIN_NUM_OF_ENTRIES = NUM_OF_ENTRIES_TO_SAVE / 2;
 
     public static void write(String str, final Context c) {
         // We need an Editor object to make preference changes.
@@ -36,9 +36,9 @@ public class PrefUtil {
             @Override
             public void run() {
 
-                if(getNumberOfEntries(c) >= NUM_OF_ENTRIES_TO_SAVE){
+                if (getNumberOfEntries(c) >= NUM_OF_ENTRIES_TO_SAVE) {
                     reduceTo(MIN_NUM_OF_ENTRIES, c);
-                    Toaster.toast("REDUCED to "+getNumberOfEntries(c));
+                    Toaster.toast("REDUCED to " + getNumberOfEntries(c));
                 }
             }
         }).start();
@@ -48,7 +48,7 @@ public class PrefUtil {
         String[] strings = new String[num];
         try {
             int y = 0;
-            for (int x = getNumberOfEntries(c); x >=num; x--) {
+            for (int x = getNumberOfEntries(c); x >= num; x--) {
                 strings[y] = get(y, c);
                 y++;
             }
@@ -64,7 +64,7 @@ public class PrefUtil {
         }
     }
 
-    private static void bringRepeatToTop(String str, Context c){
+    private static void bringRepeatToTop(String str, Context c) {
         //Log.e("STR",str+" - ");
         String[] hex = new String[getNumberOfEntries(c)];
         for (int y = 0; y < hex.length; y++) {
@@ -78,6 +78,7 @@ public class PrefUtil {
         }
         write(str, c);
     }
+
     public static String get(int n, Context c) {
         // Restore preferences
         SharedPreferences prefs = c.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -113,50 +114,49 @@ public class PrefUtil {
         editor.apply();
     }
 
-    public static String getAll(Context context){
+    public static String getAll(Context context) {
         StringBuilder str = new StringBuilder();
-        int x =0;
-        while(true){
+        int x = 0;
+        while (true) {
             String s = PrefUtil.get(x++, context);
-            if(s.equals("")){
+            if (s.equals("")) {
                 break;
-            }
-            else{
-                str .append(s);
+            } else {
+                str.append(s);
                 str.append("\n");
             }
         }
         return str.toString().trim();
     }
 
-    public static void clearAll(Context c){
+    public static void clearAll(Context c) {
         c.getSharedPreferences(PREFS_NAME, 0).edit().clear().apply();
         resetCurrentNumber(c);
     }
 
-    public static int getNumberOfEntries(Context context){
-        int x =0;
-        while(true){
+    public static int getNumberOfEntries(Context context) {
+        int x = 0;
+        while (true) {
             String s = PrefUtil.get(x++, context);
-            if(s.equals("")){
+            if (s.equals("")) {
                 break;
             }
         }
-        return x-1;
+        return x - 1;
     }
 
-    private static boolean isAlreadyWritten(String str, Context context){
-        if(ColorUtil.isSmali(str)){
+    private static boolean isAlreadyWritten(String str, Context context) {
+        if (ColorUtil.isSmali(str)) {
             str = ColorUtil.smaliCodeToHex(str);
         }
-        int x =0;
+        int x = 0;
         boolean flag = false;
-        while(true){
+        while (true) {
             String s = PrefUtil.get(x++, context);
-            if(s.equals("")){
+            if (s.equals("")) {
                 break;
             }
-            if(s.equals(str)){
+            if (s.equals(str)) {
                 flag = true;
                 break;
             }

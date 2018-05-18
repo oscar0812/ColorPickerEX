@@ -20,12 +20,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import com.bittle.colorpicker.utils.ColorUtil;
 import com.bittle.colorpicker.utils.ImageUtil;
 import com.bittle.colorpicker.utils.PrefUtil;
 import com.bittle.colorpicker.utils.Toaster;
+
+import java.util.ArrayList;
 
 public class HistoryMainActivity extends AppCompatActivity {
 
@@ -71,12 +71,12 @@ public class HistoryMainActivity extends AppCompatActivity {
 
     }
 
-    private void setMaxHeight(){
+    private void setMaxHeight() {
         // set the max height
         int newHeight = 1480 - 120;
         int num = PrefUtil.getNumberOfEntries(this);
 
-        if( num >= 13) {
+        if (num >= 13) {
             lvColorNames.getLayoutParams().height = newHeight;
         }
     }
@@ -92,13 +92,13 @@ public class HistoryMainActivity extends AppCompatActivity {
     }
 
     private ArrayList<ColorUtil.ColorName> cutList(int first,
-                                                   int last, ArrayList<ColorUtil.ColorName> c){
-        if(c.size() < last){
+                                                   int last, ArrayList<ColorUtil.ColorName> c) {
+        if (c.size() < last) {
             last = c.size();
         }
         ArrayList<ColorUtil.ColorName> list = new ArrayList<>();
 
-        for(int y = first; y<last; y++){
+        for (int y = first; y < last; y++) {
             list.add(c.get(y));
         }
         return list;
@@ -106,17 +106,16 @@ public class HistoryMainActivity extends AppCompatActivity {
 
     private void addToList() {
         int x = 0;
-        while(true){
+        while (true) {
             String hex = PrefUtil.get(x++, this);
-            if(!hex.equals("")) {
+            if (!hex.equals("")) {
                 int color = colorUtil.hexToColor(hex);
                 String name = colorUtil.getClosestColor(color);
                 mColorNameArrayList.add(new ColorUtil.ColorName(name, color));
-            }
-            else
+            } else
                 break;
         }
-        mColorNameArrayList =reverseList(mColorNameArrayList);
+        mColorNameArrayList = reverseList(mColorNameArrayList);
     }
 
     @Override

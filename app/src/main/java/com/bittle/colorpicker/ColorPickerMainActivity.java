@@ -208,7 +208,7 @@ public class ColorPickerMainActivity extends AppCompatActivity {
                         getSystemService(Context.INPUT_METHOD_SERVICE);
                 assert input != null;
                 input.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            }catch (java.lang.NullPointerException e){
+            } catch (java.lang.NullPointerException e) {
                 e.printStackTrace();
             }
         }
@@ -246,7 +246,7 @@ public class ColorPickerMainActivity extends AppCompatActivity {
         StringBuilder s = new StringBuilder();
         for (int x = 0; x < str.length(); x++) {
             if (isLegalChar(str.charAt(x))) {
-                s .append( str.charAt(x));
+                s.append(str.charAt(x));
             }
         }
         return s.toString();
