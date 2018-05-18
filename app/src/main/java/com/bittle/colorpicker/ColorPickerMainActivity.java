@@ -437,7 +437,7 @@ public class ColorPickerMainActivity extends AppCompatActivity {
     }
 
     public void showSetWallpaperDialog(final int color) {
-        final AlertDialo.Builder builder = new AlertDialog.Builder(context);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Set Wallpaper");
         builder.setMessage("Want to set this color as your Wallpaper?");
         Bitmap bitmap = imageUtil.colorToBitmap(currentColor, 100, 100);
