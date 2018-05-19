@@ -51,7 +51,6 @@ public class ColorPickerMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_color_picker_main);
-        Toaster.context = this;
         imageUtil = new ImageUtil(this);
         FABFunctions();
 
@@ -121,7 +120,7 @@ public class ColorPickerMainActivity extends AppCompatActivity {
                                 color);
                     }
                 } catch (Exception e) {
-                    Toaster.toast("INVALID HEX");
+                    Toaster.toast("INVALID HEX", context);
                 }
             }
         });
@@ -188,7 +187,7 @@ public class ColorPickerMainActivity extends AppCompatActivity {
                 showColorDialog();
                 break;
             default:
-                Toaster.toast("OOPS");
+                Toaster.toast("OOPS", context);
                 break;
         }
         return true;
@@ -366,7 +365,7 @@ public class ColorPickerMainActivity extends AppCompatActivity {
             startActivity(Intent.createChooser(
                     sendIntent, getResources().getText(R.string.send_to)));
         } else {
-            Toaster.toast("Invalid Hex Color");
+            Toaster.toast("Invalid Hex Color", context);
         }
     }
 
@@ -452,7 +451,7 @@ public class ColorPickerMainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 screenUtil.setWallpaperImage_FROM_COLOR(color, context);
-                Toaster.toast("Wallpaper set");
+                Toaster.toast("Wallpaper set", context);
             }
         });
         builder.show();

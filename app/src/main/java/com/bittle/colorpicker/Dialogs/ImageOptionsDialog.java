@@ -11,11 +11,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.bittle.colorpicker.R;
 import com.bittle.colorpicker.ImageView.CustomImageView;
-
+import com.bittle.colorpicker.R;
 import com.bittle.colorpicker.utils.ImageUtil;
-import com.bittle.colorpicker.utils.Toaster;
 
 /**
  * Created by Bittle on 1/2/17.
@@ -30,7 +28,7 @@ public class ImageOptionsDialog extends Dialog implements View.OnClickListener {
 
     public ImageOptionsDialog(Context context, int style, CustomImageView imageView) {
         super(context, style);
-        imageUtil = new ImageUtil(Toaster.context);
+        imageUtil = new ImageUtil(context);
         mainImageView = imageView;
     }
 

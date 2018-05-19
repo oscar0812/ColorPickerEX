@@ -148,7 +148,7 @@ public class ImagePickerMainActivity extends AppCompatActivity {
                         intent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
                         startActivityForResult(intent, CAMERA_ACTION);
                     } catch (Exception err) {
-                        Toaster.toast("Error in dialog!");
+                        Toaster.toast("Error in dialog!", mainContext);
                     }
 
                 } else if (items[item].equals("Choose from Library")) {
@@ -317,7 +317,7 @@ public class ImagePickerMainActivity extends AppCompatActivity {
                 selectImage();
                 break;
             default:
-                Toaster.toast("OOPS");
+                Toaster.toast("OOPS", mainContext);
                 break;
         }
         return true;

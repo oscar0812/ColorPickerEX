@@ -38,7 +38,7 @@ public class PrefUtil {
 
                 if (getNumberOfEntries(c) >= NUM_OF_ENTRIES_TO_SAVE) {
                     reduceTo(MIN_NUM_OF_ENTRIES, c);
-                    Toaster.toast("REDUCED to " + getNumberOfEntries(c));
+                    Toaster.toast("REDUCED to " + getNumberOfEntries(c), c);
                 }
             }
         }).start();

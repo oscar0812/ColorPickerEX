@@ -110,7 +110,7 @@ public class ImageUtil {
         } catch (java.lang.OutOfMemoryError err) {
             Log.d("ERROR", err.toString());
         } catch (Exception err2) {
-            Toaster.toast("Please select an image first");
+            Toaster.toast("Please select an image first", mainContext);
         }
     }
 
@@ -126,7 +126,7 @@ public class ImageUtil {
             Log.d("ERROR = ", err.toString());
             return null;
         } catch (java.lang.NullPointerException err2) {
-            Toaster.toast("Please select an image first");
+            Toaster.toast("Please select an image first", mainContext);
             return null;
         }
     }

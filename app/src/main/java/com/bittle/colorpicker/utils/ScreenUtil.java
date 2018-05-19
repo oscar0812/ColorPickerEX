@@ -70,7 +70,7 @@ public class ScreenUtil {
             WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
             wallpaperManager.setBitmap(bit);
         } catch (Exception e) {
-            Toaster.toast("Couldn\'t set wallpaper!");
+            Toaster.toast("Couldn\'t set wallpaper!", context);
         }
     }
 

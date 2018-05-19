@@ -61,7 +61,7 @@ public class HistoryMainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 PrefUtil.clearAll(thisActivity);
                 mColorNameArrayList.clear();
-                Toaster.toast("History Cleared.");
+                Toaster.toast("History Cleared.", thisActivity.getApplicationContext());
                 finish();
             }
         });

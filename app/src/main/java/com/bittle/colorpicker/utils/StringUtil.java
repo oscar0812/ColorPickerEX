@@ -170,9 +170,9 @@ public class StringUtil {
             ClipData clip = ClipData.newPlainText("text", text);
             assert clipboard != null;
             clipboard.setPrimaryClip(clip);
-            Toaster.toast("Copied To Clipboard");
+            Toaster.toast("Copied To Clipboard", c);
         } else {
-            Toaster.toast("Invalid Hex Code");
+            Toaster.toast("Invalid Hex Code", c);
         }
     }
 

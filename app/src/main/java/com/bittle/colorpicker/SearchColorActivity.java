@@ -343,7 +343,7 @@ public class SearchColorActivity extends Activity {
             holder.llContainer.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    Toaster.toast("HELD");
+                    Toaster.toast("HELD", view.getContext());
                     return false;
                 }
             });
