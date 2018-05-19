@@ -442,13 +442,7 @@ public class ColorUtil {
 
             int pixel2 = (colorName.r & 0xFF) << 16 | (colorName.g & 0xFF) << 8 | (colorName.b & 0xFF);
 
-            if (pixel1 < pixel2) {
-                return -1;
-            } else if (pixel1 > pixel2) {
-                return 1;
-            } else {
-                return 0;
-            }
+            return Integer.compare(pixel1, pixel2);
 
         }
 
@@ -516,28 +510,6 @@ public class ColorUtil {
         private double computeMSE(int r2, int g2, int b2) {
             //return computeClosestColor_CIE94(r2, g2, b2);
             return computeClosestColor_CIEDE2000(r2, g2, b2);
-        }
-
-        private double computeClosestColor_CIE94(int r2, int g2, int b2) {
-            double[] f1 = rgbToLAB(r, g, b);
-            double[] f2 = rgbToLAB(r2, g2, b2);
-
-            final double L1 = f1[0], A1 = f1[1], A2 = f2[1], L2 = f2[0], B1 = f1[2], B2 = f2[2];
-            double changeOfL = L1 - L2;
-            double C1 = Math.sqrt((Math.pow(A1, 2)) + (Math.pow(B1, 2)));
-            double C2 = Math.sqrt((Math.pow(A2, 2)) + (Math.pow(B2, 2)));
-            double changeOfC_ab = C1 - C2;
-            double changeOfE_ab = getChangeOfE_ab(f1, f2);
-            double changeOfH_ab = getChangeOfH_ab(changeOfE_ab, changeOfL, changeOfC_ab);
-            final double KL = 2, K1 = 0.048, K2 = 0.014, KC = 1, KH = 1;
-            final double SL = 1, SC = 1 + (K1 * C1), SH = 1 + (K2 * C1);
-
-            double firstSection = changeOfL / (KL * SL);
-            double secondSection = changeOfC_ab / (KC * SC);
-            double thirdSection = changeOfH_ab / (KH * SH);
-
-            return Math.sqrt((Math.pow(firstSection, 2) + Math.pow(secondSection, 2)
-                    + Math.pow(thirdSection, 2)));
         }
 
         private double computeClosestColor_CIEDE2000(int r2, int g2, int b3) {
