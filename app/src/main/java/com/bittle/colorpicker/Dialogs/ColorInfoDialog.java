@@ -21,7 +21,6 @@ import com.bittle.colorpicker.utils.StringUtil;
 
 public class ColorInfoDialog extends Activity {
     ImageUtil imageUtil;
-    ColorUtil colorUtil = new ColorUtil();
 
     private final float BORDER_WIDTH = 70.0f;
 
@@ -49,15 +48,15 @@ public class ColorInfoDialog extends Activity {
     }
 
     public void setTheImageViews() {
-        ImageView mainColorImageView = (ImageView) findViewById(R.id.mainColorImageView);
+        ImageView mainColorImageView = findViewById(R.id.mainColorImageView);
 
         final int mainColor = ImagePickerMainActivity.getCurrentColor();
         Bitmap pic = imageUtil.colorToBitmap_CRISP(mainColor);
         pic = imageUtil.cropToCircleWithBorder(pic, Color.BLACK, BORDER_WIDTH);
         mainColorImageView.setImageBitmap(pic);
 
-        TextView currentHexTextView = (TextView) findViewById(R.id.currentHexTextViewDialog);
-        String st = ("#" + colorUtil.colorToHex(mainColor));
+        TextView currentHexTextView = findViewById(R.id.currentHexTextViewDialog);
+        String st = ("#" + ColorUtil.colorToHex(mainColor));
         currentHexTextView.setText(st);
 
         if(st.equals("##0")){
@@ -76,15 +75,15 @@ public class ColorInfoDialog extends Activity {
         mainColorImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                StringUtil.copyToClipboard(colorUtil.colorToHex(mainColor), mainContext);
+                StringUtil.copyToClipboard(ColorUtil.colorToHex(mainColor), mainContext);
             }
         });
 
-        allTextViewsTogether +="Touched Color\n"+currentHexTextView.getText().toString()+"\n\n";
+        allTextViewsTogether +="Touched ColorModel\n"+currentHexTextView.getText().toString()+"\n\n";
         setTheOptions(mainColor);
         allTextViewsTogether = allTextViewsTogether.trim();
 
-        if(((TextView) findViewById(R.id.averageTextViewDialog))
+        if(((TextView)(findViewById(R.id.averageTextViewDialog)))
                 .getText().toString().equals("##0")){
             finish();
         }
@@ -100,16 +99,16 @@ public class ColorInfoDialog extends Activity {
 
     private void setLighterOptions(int mainColor) {
 
-        ImageView lighterImageView = (ImageView) findViewById(R.id.lighterImageViewDialog);
+        ImageView lighterImageView = findViewById(R.id.lighterImageViewDialog);
 
-        final int lighterColor = colorUtil.lightenColor(mainColor, 0.25);
+        final int lighterColor = ColorUtil.getInstance().lightenColor(mainColor, 0.25);
         Bitmap colorBitmap = imageUtil.colorToBitmap_CRISP(lighterColor);
 
         colorBitmap = imageUtil.cropToCircleWithBorder(colorBitmap, Color.BLACK, BORDER_WIDTH);
         lighterImageView.setImageBitmap(colorBitmap);
 
-        TextView lightTextView = (TextView) findViewById(R.id.lighterTextViewDialog);
-        String text =  lightTextView.getText().toString() + "\n#" + colorUtil.colorToHex(lighterColor);
+        TextView lightTextView = findViewById(R.id.lighterTextViewDialog);
+        String text =  lightTextView.getText().toString() + "\n#" + ColorUtil.colorToHex(lighterColor);
         lightTextView.setText(text);
 
         lightTextView.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +123,7 @@ public class ColorInfoDialog extends Activity {
         lighterImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                StringUtil.copyToClipboard(colorUtil.colorToHex(lighterColor), mainContext);
+                StringUtil.copyToClipboard(ColorUtil.colorToHex(lighterColor), mainContext);
             }
         });
 
@@ -133,16 +132,16 @@ public class ColorInfoDialog extends Activity {
 
     private void setDarkerOptions(int mainColor) {
 
-        ImageView darkerImageView = (ImageView) findViewById(R.id.darkerImageViewDialog);
+        ImageView darkerImageView = findViewById(R.id.darkerImageViewDialog);
 
-        final int darkerColor = colorUtil.darkenColor(mainColor, 0.25);
+        final int darkerColor = ColorUtil.getInstance().darkenColor(mainColor, 0.25);
         Bitmap colorBitmap = imageUtil.colorToBitmap_CRISP(darkerColor);
 
         colorBitmap = imageUtil.cropToCircleWithBorder(colorBitmap, Color.BLACK, BORDER_WIDTH);
         darkerImageView.setImageBitmap(colorBitmap);
 
-        TextView darkTextView = (TextView) findViewById(R.id.darkerTextViewDialog);
-        String text = darkTextView.getText().toString() + "\n#" + colorUtil.colorToHex(darkerColor);
+        TextView darkTextView = findViewById(R.id.darkerTextViewDialog);
+        String text = darkTextView.getText().toString() + "\n#" + ColorUtil.colorToHex(darkerColor);
         darkTextView.setText(text);
 
 
@@ -158,7 +157,7 @@ public class ColorInfoDialog extends Activity {
         darkerImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                StringUtil.copyToClipboard(colorUtil.colorToHex(darkerColor), mainContext);
+                StringUtil.copyToClipboard(ColorUtil.colorToHex(darkerColor), mainContext);
             }
         });
 
@@ -167,16 +166,16 @@ public class ColorInfoDialog extends Activity {
 
     private void setInvertedOptions(final int mainColor) {
 
-        ImageView invertedImageView = (ImageView) findViewById(R.id.invertedImageViewDialog);
+        ImageView invertedImageView = findViewById(R.id.invertedImageViewDialog);
 
-        final int invertedColor = colorUtil.invertColor(mainColor);
+        final int invertedColor = ColorUtil.getInstance().invertColor(mainColor);
         Bitmap colorBitmap = imageUtil.colorToBitmap_CRISP(invertedColor);
 
         colorBitmap = imageUtil.cropToCircleWithBorder(colorBitmap, Color.BLACK, BORDER_WIDTH);
         invertedImageView.setImageBitmap(colorBitmap);
 
-        TextView invertedTextView = (TextView) findViewById(R.id.invertedTextViewDialog);
-        String text = invertedTextView.getText().toString() + "\n#" + colorUtil.colorToHex(invertedColor);
+        TextView invertedTextView = findViewById(R.id.invertedTextViewDialog);
+        String text = invertedTextView.getText().toString() + "\n#" + ColorUtil.colorToHex(invertedColor);
         invertedTextView.setText(text);
 
         invertedTextView.setOnClickListener(new View.OnClickListener() {
@@ -191,7 +190,7 @@ public class ColorInfoDialog extends Activity {
         invertedImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                StringUtil.copyToClipboard(colorUtil.colorToHex(invertedColor), mainContext);
+                StringUtil.copyToClipboard(ColorUtil.colorToHex(invertedColor), mainContext);
             }
         });
 
@@ -199,7 +198,7 @@ public class ColorInfoDialog extends Activity {
     }
 
     private void setDominantOptions() {
-        ImageView domView = (ImageView) findViewById(R.id.dominantImageViewDialog);
+        ImageView domView = findViewById(R.id.dominantImageViewDialog);
 
         final int domColor = ImagePickerMainActivity.getDominantColor();
 
@@ -207,8 +206,8 @@ public class ColorInfoDialog extends Activity {
         colorBitmap = imageUtil.cropToCircleWithBorder(colorBitmap, Color.BLACK, BORDER_WIDTH);
         domView.setImageBitmap(colorBitmap);
 
-        TextView textView = (TextView) findViewById(R.id.dominantTextViewDialog);
-        String text= textView.getText().toString() + "\n#" + colorUtil.colorToHex(domColor);
+        TextView textView = findViewById(R.id.dominantTextViewDialog);
+        String text= textView.getText().toString() + "\n#" + ColorUtil.colorToHex(domColor);
         textView.setText(text);
 
         textView.setOnClickListener(new View.OnClickListener() {
@@ -223,7 +222,7 @@ public class ColorInfoDialog extends Activity {
         domView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                StringUtil.copyToClipboard(colorUtil.colorToHex(domColor), mainContext);
+                StringUtil.copyToClipboard(ColorUtil.colorToHex(domColor), mainContext);
             }
         });
 
@@ -232,15 +231,15 @@ public class ColorInfoDialog extends Activity {
 
     private void setAverageOptions(){
         try {
-            final ImageView avView = (ImageView) findViewById(R.id.averageImageViewDialog);
-            final int aColor = colorUtil.hexToColor(averageColor);
+            final ImageView avView = findViewById(R.id.averageImageViewDialog);
+            final int aColor = ColorUtil.getInstance().hexToColor(averageColor);
 
             Bitmap colorBitmap = imageUtil.colorToBitmap_CRISP(aColor);
             colorBitmap = imageUtil.cropToCircleWithBorder(colorBitmap, Color.BLACK, BORDER_WIDTH);
             avView.setImageBitmap(colorBitmap);
 
-            TextView textView = (TextView) findViewById(R.id.averageTextViewDialog);
-            String text = textView.getText().toString() + "\n#" + colorUtil.colorToHex(aColor);
+            TextView textView = findViewById(R.id.averageTextViewDialog);
+            String text = textView.getText().toString() + "\n#" + ColorUtil.colorToHex(aColor);
             textView.setText(text);
 
             textView.setOnClickListener(new View.OnClickListener() {
@@ -255,7 +254,7 @@ public class ColorInfoDialog extends Activity {
             avView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    StringUtil.copyToClipboard(colorUtil.colorToHex(aColor), mainContext);
+                    StringUtil.copyToClipboard(ColorUtil.colorToHex(aColor), mainContext);
                 }
             });
 
@@ -267,7 +266,7 @@ public class ColorInfoDialog extends Activity {
 
     public void switchActivities(int c) {
         Intent intent = new Intent(ColorInfoDialog.this, ConvertMainActivity.class);
-        intent.putExtra("color", colorUtil.colorToHex(c));
+        intent.putExtra("color", ColorUtil.colorToHex(c));
         startActivity(intent);
     }
 

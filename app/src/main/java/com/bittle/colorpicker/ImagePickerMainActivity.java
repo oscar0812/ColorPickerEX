@@ -38,7 +38,6 @@ import java.io.File;
 public class ImagePickerMainActivity extends AppCompatActivity {
 
     private ImageUtil imageUtil;
-    ColorUtil colorUtil = new ColorUtil();
     ScreenUtil screenUtil = new ScreenUtil();
 
     private CustomImageView mainImageView;
@@ -69,11 +68,11 @@ public class ImagePickerMainActivity extends AppCompatActivity {
         mainContext = this;
         maxTexture = screenUtil.getMaxTexture();
 
-        mainImageView = (CustomImageView) findViewById(R.id.mainImageView);
+        mainImageView = findViewById(R.id.mainImageView);
 
         holdFAB();
 
-        final ImageView colorImageView = (ImageView) findViewById(R.id.currentColorImageView);
+        final ImageView colorImageView = findViewById(R.id.currentColorImageView);
 
         mainImageView.setMaxScale(9000.0f);
 
@@ -134,7 +133,7 @@ public class ImagePickerMainActivity extends AppCompatActivity {
                 "Cancel"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ImagePickerMainActivity.this);
-        builder.setTitle("Get Color From Image");
+        builder.setTitle("Get ColorModel From Image");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
@@ -242,16 +241,16 @@ public class ImagePickerMainActivity extends AppCompatActivity {
     public void showColorInfoDialog() {
 
         Intent intent = new Intent(ImagePickerMainActivity.this, ColorInfoDialog.class);
-        int hex = colorUtil.getAverageColor(imageUtil.drawableToBitmap(
+        int hex = ColorUtil.getInstance().getAverageColor(imageUtil.drawableToBitmap(
                 mainImageView.getDrawable()));
-        intent.putExtra("average", colorUtil.colorToHex(hex));
+        intent.putExtra("average", ColorUtil.colorToHex(hex));
 
         startActivity(intent);
     }
 
     private void setDominantColor() {
         if (mainImageView.getDrawable() != null) {
-            mostDomColor = colorUtil.getDominantColor(
+            mostDomColor = ColorUtil.getInstance().getDominantColor(
                     imageUtil.drawableToBitmap(mainImageView.getDrawable()));
         }
     }
@@ -271,10 +270,10 @@ public class ImagePickerMainActivity extends AppCompatActivity {
 
         imageOptionsDialog.moveDialogToTop(imageOptionsDialog.LENGTH_FROM_TOP);
 
-        final FloatingActionsMenu menu = (FloatingActionsMenu) findViewById(R.id.multiple_actions_down);
+        final FloatingActionsMenu menu = findViewById(R.id.multiple_actions_down);
         menu.bringToFront();
 
-        FloatingActionButton optionsButton = (FloatingActionButton) findViewById(R.id.optionsFab);
+        FloatingActionButton optionsButton = findViewById(R.id.optionsFab);
         optionsButton.setSize(FloatingActionButton.SIZE_MINI);
 
         // ======= catch out of memory errors ======

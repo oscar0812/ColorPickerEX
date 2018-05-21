@@ -35,8 +35,6 @@ public class ImageUtil {
     public final float MAX_FONT_SIZE = 500.0f;
     public static final boolean CHANGE_BORDER = true;
 
-    private ColorUtil colorUtil = new ColorUtil();
-
     public ImageUtil(Context context) {
         mainContext = context;
     }
@@ -259,10 +257,10 @@ public class ImageUtil {
 
     public Bitmap cropToCircleWithBorder(Bitmap bitmap, int currentColor, float borderWidth,
                                           boolean changeBorder) {
-        if(colorUtil.isDarkColor(currentColor) && changeBorder){
+        if(ColorUtil.getInstance().isDarkColor(currentColor) && changeBorder){
             currentColor = Color.WHITE;
         }
-        else if(!colorUtil.isDarkColor(currentColor) && changeBorder){
+        else if(!ColorUtil.getInstance().isDarkColor(currentColor) && changeBorder){
             currentColor = Color.BLACK;
         }
         Bitmap output;

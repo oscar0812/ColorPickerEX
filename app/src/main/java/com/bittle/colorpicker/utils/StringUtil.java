@@ -13,6 +13,8 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.widget.TextView;
 
+import com.bittle.colorpicker.realm.DBRealm;
+
 /**
  * Created by Bittle on 1/6/17.
  */
@@ -163,8 +165,10 @@ public class StringUtil {
 
     public static void copyToClipboard(String text, Context c) {
         if (text.length() >= 6) {
-            if(ColorUtil.validHex(text) || ColorUtil.validHex(ColorUtil.smaliCodeToHex(text))) {
-                PrefUtil.write(text, c);
+            if(ColorUtil.getInstance().validHex(text) ||
+                    ColorUtil.getInstance().validHex(ColorUtil.getInstance().smaliCodeToHex(text))) {
+                // write color to db
+                DBRealm.getInstance(c).insert(text);
             }
             ClipboardManager clipboard = (ClipboardManager) c.getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData clip = ClipData.newPlainText("text", text);

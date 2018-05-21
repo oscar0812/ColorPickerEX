@@ -20,22 +20,22 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.bittle.colorpicker.utils.ColorUtil;
+import com.bittle.colorpicker.realm.ColorModel;
+import com.bittle.colorpicker.realm.DBRealm;
 import com.bittle.colorpicker.utils.ImageUtil;
-import com.bittle.colorpicker.utils.PrefUtil;
 import com.bittle.colorpicker.utils.Toaster;
 
 import java.util.ArrayList;
+
+import io.realm.RealmResults;
 
 public class HistoryMainActivity extends AppCompatActivity {
 
     Activity thisActivity;
     ImageUtil imageUtil;
     private ListView lvColorNames;
-    ColorUtil colorUtil = new ColorUtil();
 
-    private ArrayList<ColorUtil.ColorName> mColorNameArrayList = new ArrayList<ColorUtil.ColorName>();
-    private HistoryMainActivity.MyAdapter adapter1;
+    private ArrayList<ColorModel> mColorNameArrayList = new ArrayList<>();
 
 
     @Override
@@ -48,18 +48,18 @@ public class HistoryMainActivity extends AppCompatActivity {
 
         initialize();
         addToList();
-
         // Add Text Change Listener to EditText
     }
 
     private void initialize() {
-        lvColorNames = (ListView) findViewById(R.id.historyList);
-        TextView clear = (TextView) findViewById(R.id.clearTextViewHistory);
+        lvColorNames = findViewById(R.id.historyList);
+        TextView clear = findViewById(R.id.clearTextViewHistory);
 
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PrefUtil.clearAll(thisActivity);
+                //  clear color db
+                DBRealm.getInstance(thisActivity.getApplicationContext()).clearAll();
                 mColorNameArrayList.clear();
                 Toaster.toast("History Cleared.", thisActivity.getApplicationContext());
                 finish();
@@ -74,69 +74,46 @@ public class HistoryMainActivity extends AppCompatActivity {
     private void setMaxHeight() {
         // set the max height
         int newHeight = 1480 - 120;
-        int num = PrefUtil.getNumberOfEntries(this);
+        // get number of db entries
+        int num = mColorNameArrayList.size();
 
         if (num >= 13) {
             lvColorNames.getLayoutParams().height = newHeight;
         }
     }
 
-    private ArrayList<ColorUtil.ColorName> reverseList(ArrayList<ColorUtil.ColorName> c) {
-        ArrayList<ColorUtil.ColorName> newList = new ArrayList<>();
-        for (int x = c.size() - 1; x >= 0; x--) {
-            //Log.d("Printing: ", c.get(x).hex);
-            newList.add(c.get(x));
-        }
-        newList = cutList(0, PrefUtil.MIN_NUM_OF_ENTRIES, newList);
-        return newList;
-    }
 
-    private ArrayList<ColorUtil.ColorName> cutList(int first,
-                                                   int last, ArrayList<ColorUtil.ColorName> c) {
-        if (c.size() < last) {
-            last = c.size();
-        }
-        ArrayList<ColorUtil.ColorName> list = new ArrayList<>();
-
-        for (int y = first; y < last; y++) {
-            list.add(c.get(y));
-        }
-        return list;
-    }
-
+    // populate the list from db
     private void addToList() {
-        int x = 0;
-        while (true) {
-            String hex = PrefUtil.get(x++, this);
-            if (!hex.equals("")) {
-                int color = colorUtil.hexToColor(hex);
-                String name = colorUtil.getClosestColor(color);
-                mColorNameArrayList.add(new ColorUtil.ColorName(name, color));
-            } else
-                break;
-        }
-        mColorNameArrayList = reverseList(mColorNameArrayList);
+        RealmResults<ColorModel> results =
+                DBRealm.getInstance(thisActivity.getApplicationContext()).findAll();
+        mColorNameArrayList.addAll(results);
     }
 
     @Override
     protected void onResume() {
-        // TODO Auto-generated method stub
         super.onResume();
+        DBRealm.getInstance(this).start();
 
-
-        adapter1 = new HistoryMainActivity.MyAdapter(HistoryMainActivity.this, mColorNameArrayList);
+        MyAdapter adapter1 = new MyAdapter(HistoryMainActivity.this, mColorNameArrayList);
         lvColorNames.setAdapter(adapter1);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // close the DB to avoid leaks
+        DBRealm.getInstance(this).close();
+    }
 
     // Adapter Class
     public class MyAdapter extends BaseAdapter implements Filterable {
 
-        private ArrayList<ColorUtil.ColorName> mOriginalValues; // Original Values
-        private ArrayList<ColorUtil.ColorName> mDisplayedValues;    // Values to be displayed
+        private ArrayList<ColorModel> mOriginalValues; // Original Values
+        private ArrayList<ColorModel> mDisplayedValues;    // Values to be displayed
         LayoutInflater inflater;
 
-        private MyAdapter(Context context, ArrayList<ColorUtil.ColorName> mColorNameArrayList) {
+        private MyAdapter(Context context, ArrayList<ColorModel> mColorNameArrayList) {
             this.mOriginalValues = mColorNameArrayList;
             this.mDisplayedValues = mColorNameArrayList;
             inflater = LayoutInflater.from(context);
@@ -172,10 +149,10 @@ public class HistoryMainActivity extends AppCompatActivity {
 
                 holder = new HistoryMainActivity.MyAdapter.ViewHolder();
                 convertView = inflater.inflate(R.layout.row, null);
-                holder.llContainer = (LinearLayout) convertView.findViewById(R.id.llContainer);
-                holder.colorBox = (ImageView) convertView.findViewById(R.id.colorImageViewSearch);
-                holder.tvName = (TextView) convertView.findViewById(R.id.colorNameTextView);
-                holder.tvPrice = (TextView) convertView.findViewById(R.id.hexValueTextView);
+                holder.llContainer = convertView.findViewById(R.id.llContainer);
+                holder.colorBox = convertView.findViewById(R.id.colorImageViewSearch);
+                holder.tvName = convertView.findViewById(R.id.colorNameTextView);
+                holder.tvPrice = convertView.findViewById(R.id.hexValueTextView);
                 convertView.setTag(holder);
 
                 setMaxHeight();
@@ -186,8 +163,8 @@ public class HistoryMainActivity extends AppCompatActivity {
             bit = imageUtil.cropToCircleWithBorder(bit, Color.BLACK, 1.0f);
             //bit = imageUtil.cropToCircle(bit);
             holder.colorBox.setImageBitmap(bit);
-            holder.tvName.setText(mDisplayedValues.get(position).name);
-            String text = "#" + mDisplayedValues.get(position).hex;
+            holder.tvName.setText(mDisplayedValues.get(position).getName());
+            String text = "#" + mDisplayedValues.get(position).getHex();
             holder.tvPrice.setText(text);
 
             holder.llContainer.setOnClickListener(new View.OnClickListener() {
@@ -195,7 +172,7 @@ public class HistoryMainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent result = new Intent();
 
-                    result.putExtra("HEX", mDisplayedValues.get(position).hex);
+                    result.putExtra("HEX", mDisplayedValues.get(position).getHex());
                     setResult(ColorPickerMainActivity.SEARCH_COMPLETE, result);
 
                     thisActivity.finish();
@@ -213,7 +190,7 @@ public class HistoryMainActivity extends AppCompatActivity {
                 @Override
                 protected void publishResults(CharSequence constraint, FilterResults results) {
 
-                    mDisplayedValues = (ArrayList<ColorUtil.ColorName>) results.values; // has the filtered values
+                    mDisplayedValues = (ArrayList<ColorModel>) results.values; // has the filtered values
                     try {
                         notifyDataSetChanged();  // notifies the data with new filtered values
                     } catch (Exception e) {
@@ -224,7 +201,7 @@ public class HistoryMainActivity extends AppCompatActivity {
                 @Override
                 protected FilterResults performFiltering(CharSequence constraint) {
                     FilterResults results = new FilterResults();        // Holds the results of a filtering operation in values
-                    ArrayList<ColorUtil.ColorName> FilteredArrList = new ArrayList<>();
+                    ArrayList<ColorModel> FilteredArrList = new ArrayList<>();
 
                     if (mOriginalValues == null) {
                         mOriginalValues = new ArrayList<>(mDisplayedValues); // saves the original data in mOriginalValues
@@ -238,12 +215,12 @@ public class HistoryMainActivity extends AppCompatActivity {
                     } else {
                         constraint = constraint.toString().toLowerCase();
                         for (int i = 0; i < mOriginalValues.size(); i++) {
-                            String data = mOriginalValues.get(i).name;
+                            String data = mOriginalValues.get(i).getName();
                             if (data.toLowerCase().contains(constraint.toString())
-                                    || mOriginalValues.get(i).hex.toLowerCase().
+                                    || mOriginalValues.get(i).getHex().toLowerCase().
                                     contains(constraint.toString())) {
 
-                                FilteredArrList.add(new ColorUtil.ColorName(mOriginalValues.get(i)));
+                                FilteredArrList.add((mOriginalValues.get(i)));
                             }
                         }
                         // set the Filtered result to return

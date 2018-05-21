@@ -6,9 +6,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.TextKeyListener;
@@ -22,6 +22,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bittle.colorpicker.Dialogs.ColorInfoDialog;
+import com.bittle.colorpicker.realm.DBRealm;
+import com.bittle.colorpicker.utils.ColorUtil;
+import com.bittle.colorpicker.utils.ImageUtil;
+import com.bittle.colorpicker.utils.ScreenUtil;
+import com.bittle.colorpicker.utils.StringUtil;
+import com.bittle.colorpicker.utils.Toaster;
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorSelectedListener;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
@@ -29,20 +35,12 @@ import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
-import com.bittle.colorpicker.utils.ColorUtil;
-import com.bittle.colorpicker.utils.ImageUtil;
-import com.bittle.colorpicker.utils.PrefUtil;
-import com.bittle.colorpicker.utils.ScreenUtil;
-import com.bittle.colorpicker.utils.StringUtil;
-import com.bittle.colorpicker.utils.Toaster;
-
 public class ColorPickerMainActivity extends AppCompatActivity {
     private RelativeLayout mainAppLayout;
     private EditText mainEditText;
     public static final int SEARCH_COMPLETE = 0;
 
     int currentColor = Color.parseColor("#EEEEEE");
-    ColorUtil colorUtil = new ColorUtil();
     protected static Uri imageUri = null;
     private ScreenUtil screenUtil = new ScreenUtil();
     private ImageUtil imageUtil = null;
@@ -54,11 +52,9 @@ public class ColorPickerMainActivity extends AppCompatActivity {
         imageUtil = new ImageUtil(this);
         FABFunctions();
 
-        //PrefUtil.clearAll(this);
-
-        final EditText mainTextBox = (EditText) findViewById(R.id.hexTextBoxConvert);
-        final TextView hexSignTextView = (TextView) findViewById(R.id.hexSignTextView);
-        final RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.mainRelativeLayout);
+        final EditText mainTextBox = findViewById(R.id.hexTextBoxConvert);
+        final TextView hexSignTextView = findViewById(R.id.hexSignTextView);
+        final RelativeLayout mainLayout = findViewById(R.id.mainRelativeLayout);
 
         mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,7 +107,8 @@ public class ColorPickerMainActivity extends AppCompatActivity {
                         int color = Color.parseColor("#" + str);
                         currentColor = color;
                         mainLayout.setBackgroundColor(color);
-                        PrefUtil.write(colorUtil.colorToHex(color), context);
+
+                        DBRealm.getInstance(context).insert(ColorUtil.colorToHex(color));
                         setClosestColor(color);
 
                         //colorTheLayout(color);
@@ -153,10 +150,16 @@ public class ColorPickerMainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        mainAppLayout.setBackgroundColor(currentColor);
-        mainEditText.setText(colorUtil.colorToHex(currentColor));
-
         super.onResume();
+        DBRealm.getInstance(this).start();
+        mainAppLayout.setBackgroundColor(currentColor);
+        mainEditText.setText(ColorUtil.colorToHex(currentColor));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        DBRealm.getInstance(this).close();
     }
 
     @Override
@@ -217,7 +220,7 @@ public class ColorPickerMainActivity extends AppCompatActivity {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                if (colorUtil.isDarkColor(color)) {
+                if (ColorUtil.getInstance().isDarkColor(color)) {
 
                     editText.setTextColor(Color.WHITE);
                     hexSign.setTextColor(Color.WHITE);
@@ -253,13 +256,15 @@ public class ColorPickerMainActivity extends AppCompatActivity {
 
     public void colorTheLayout(int color) {
         mainAppLayout.setBackgroundColor(color);
-        mainEditText.setText(colorUtil.colorToHex(color));
+        mainEditText.setText(ColorUtil.colorToHex(color));
         setClosestColor(color);
-        PrefUtil.write(colorUtil.colorToHex(color), this);
+
+        //  write color to db
+        DBRealm.getInstance(context).insert(ColorUtil.colorToHex(color));
     }
 
     public void setClosestColor(int color) {
-        final TextView closestColorTextView = (TextView) findViewById(R.id.closestColorTextView);
+        final TextView closestColorTextView = findViewById(R.id.closestColorTextView);
 
         closestColorTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -271,13 +276,13 @@ public class ColorPickerMainActivity extends AppCompatActivity {
 
         closestColorTextView.setTypeface(StringUtil.getFont(this));
 
-        if (colorUtil.isDarkColor(color)) {
+        if (ColorUtil.getInstance().isDarkColor(color)) {
             closestColorTextView.setTextColor(Color.WHITE);
         } else {
             closestColorTextView.setTextColor(Color.BLACK);
         }
 
-        closestColorTextView.setText(colorUtil.getClosestColor(color));
+        closestColorTextView.setText(ColorUtil.getInstance().getClosestColor(color));
     }
 
     public void switchActivities(final Intent in) {
@@ -294,7 +299,7 @@ public class ColorPickerMainActivity extends AppCompatActivity {
 
     public void switchActivities(int c) {
         Intent intent = new Intent(ColorPickerMainActivity.this, ConvertMainActivity.class);
-        intent.putExtra("color", colorUtil.colorToHex(c));
+        intent.putExtra("color", ColorUtil.colorToHex(c));
         startActivity(intent);
     }
 
@@ -314,7 +319,7 @@ public class ColorPickerMainActivity extends AppCompatActivity {
         if (aRequest == SEARCH_COMPLETE) {
             try {
                 String returnValue = aData.getStringExtra("HEX");
-                colorTheLayout(colorUtil.hexToColor(returnValue));
+                colorTheLayout(ColorUtil.getInstance().hexToColor(returnValue));
             } catch (Exception ignored) {
             }
         }
@@ -365,7 +370,7 @@ public class ColorPickerMainActivity extends AppCompatActivity {
             startActivity(Intent.createChooser(
                     sendIntent, getResources().getText(R.string.send_to)));
         } else {
-            Toaster.toast("Invalid Hex Color", context);
+            Toaster.toast("Invalid Hex ColorModel", context);
         }
     }
 
@@ -373,20 +378,20 @@ public class ColorPickerMainActivity extends AppCompatActivity {
     Context context = this;
 
     public void FABFunctions() {
-        final FloatingActionsMenu menu = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
+        final FloatingActionsMenu menu = findViewById(R.id.multiple_actions);
         this.menu = menu;
 
-        FloatingActionButton lookUpButton = (FloatingActionButton) findViewById(R.id.action_a);
+        FloatingActionButton lookUpButton = findViewById(R.id.action_a);
         lookUpButton.setSize(FloatingActionButton.SIZE_MINI);
         lookUpButton.setIconDrawable(getResources().getDrawable(
                 R.drawable.magnify, this.getTheme()));
 
-        FloatingActionButton shareButton = (FloatingActionButton) findViewById(R.id.action_b);
+        FloatingActionButton shareButton = findViewById(R.id.action_b);
         shareButton.setSize(FloatingActionButton.SIZE_MINI);
         shareButton.setIconDrawable(getResources().getDrawable(
                 R.drawable.blackshare, this.getTheme()));
 
-        FloatingActionButton historyButton = (FloatingActionButton) findViewById(R.id.action_c);
+        FloatingActionButton historyButton = findViewById(R.id.action_c);
         historyButton.setSize(FloatingActionButton.SIZE_MINI);
         historyButton.setIconDrawable(getResources().getDrawable(
                 R.drawable.letterh, this.getTheme()));
@@ -394,8 +399,6 @@ public class ColorPickerMainActivity extends AppCompatActivity {
         lookUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toaster.toast(PrefUtil.getAll(context) + "\n" +
-                //        PrefUtil.getNumberOfEntries(context));
                 openSearch();
             }
         });
@@ -403,7 +406,7 @@ public class ColorPickerMainActivity extends AppCompatActivity {
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String str = "Check out \"Color Picker EX\" -\nhttps://play.google.com/store" +
+                String str = "Check out \"ColorModel Picker EX\" -\nhttps://play.google.com/store" +
                         "/apps/details?id=com.bittle.colorpicker";
                 shareButton(str);
                 menu.collapse();

@@ -17,7 +17,6 @@ import com.bittle.colorpicker.utils.StringUtil;
 
 public class ConvertMainActivity extends AppCompatActivity {
 
-    ColorUtil colorUtil = new ColorUtil();
     private String hex = "";
     Context mainContext;
 
@@ -34,14 +33,14 @@ public class ConvertMainActivity extends AppCompatActivity {
         }
 
         if (hex.equals("")) {
-            hex = colorUtil.colorToHex(Color.BLACK);
+            hex = ColorUtil.colorToHex(Color.BLACK);
         }
 
         setTheTextBoxes(hex);
 
-        TextView closeTheDialog = (TextView) findViewById(R.id.closeTextViewConvert);
+        TextView closeTheDialog = findViewById(R.id.closeTextViewConvert);
         closeTheDialog.setTypeface(StringUtil.getFont(this));
-        //closeTheDialog.setTextColor(colorUtil.hexToColor(hex));
+        //closeTheDialog.setTextColor(ColorUtil.getInstance().hexToColor(hex));
         closeTheDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,22 +48,22 @@ public class ConvertMainActivity extends AppCompatActivity {
             }
         });
 
-        final TextView[] mainTexts = {(TextView) findViewById(R.id.hexTextBoxConvert)
-                , (TextView) findViewById(R.id.intColorTextBoxConvert)
-                , (TextView) findViewById(R.id.rgbTextBoxConvert)
-                , (TextView) findViewById(R.id.smaliColorTextBoxConvert)
-                , (TextView) findViewById(R.id.originTextBoxConvert)};
+        final TextView[] mainTexts = { findViewById(R.id.hexTextBoxConvert)
+                , findViewById(R.id.intColorTextBoxConvert)
+                , findViewById(R.id.rgbTextBoxConvert)
+                , findViewById(R.id.smaliColorTextBoxConvert)
+                , findViewById(R.id.originTextBoxConvert)};
 
 
-        final TextView[] textViews = {(TextView) findViewById(R.id.textView1convert)
-                , (TextView) findViewById(R.id.textView2convert)
-                , (TextView) findViewById(R.id.textView3convert)
-                , (TextView) findViewById(R.id.textView4convert)
-                , (TextView) findViewById(R.id.textView5convert)};
+        final TextView[] textViews = {findViewById(R.id.textView1convert)
+                , findViewById(R.id.textView2convert)
+                , findViewById(R.id.textView3convert)
+                , findViewById(R.id.textView4convert)
+                , findViewById(R.id.textView5convert)};
 
-        TextView copyAll = (TextView) findViewById(R.id.copyAllTextViewConvert);
+        TextView copyAll = findViewById(R.id.copyAllTextViewConvert);
         copyAll.setTypeface(StringUtil.getFont(this));
-        //copyAll.setTextColor(colorUtil.hexToColor(hex));
+        //copyAll.setTextColor(ColorUtil.getInstance().hexToColor(hex));
         copyAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,24 +82,24 @@ public class ConvertMainActivity extends AppCompatActivity {
     public void setTheTextBoxes(String hex) {
         Typeface font = StringUtil.getFont(this);
 
-        final TextView[] mainTexts = {(TextView) findViewById(R.id.hexTextBoxConvert)
-                , (TextView) findViewById(R.id.intColorTextBoxConvert)
-                , (TextView) findViewById(R.id.rgbTextBoxConvert)
-                , (TextView) findViewById(R.id.smaliColorTextBoxConvert)
-                , (TextView) findViewById(R.id.originTextBoxConvert)};
+        final TextView[] mainTexts = {findViewById(R.id.hexTextBoxConvert)
+                , findViewById(R.id.intColorTextBoxConvert)
+                , findViewById(R.id.rgbTextBoxConvert)
+                , findViewById(R.id.smaliColorTextBoxConvert)
+                , findViewById(R.id.originTextBoxConvert)};
 
 
-        final TextView[] textViews = {(TextView) findViewById(R.id.textView1convert)
-                , (TextView) findViewById(R.id.textView2convert)
-                , (TextView) findViewById(R.id.textView3convert)
-                , (TextView) findViewById(R.id.textView4convert)
-                , (TextView) findViewById(R.id.textView5convert)};
+        final TextView[] textViews = {findViewById(R.id.textView1convert)
+                , findViewById(R.id.textView2convert)
+                , findViewById(R.id.textView3convert)
+                , findViewById(R.id.textView4convert)
+                , findViewById(R.id.textView5convert)};
 
-        RelativeLayout[] layouts = {(RelativeLayout) findViewById(R.id.firstConvert)
-                , (RelativeLayout) findViewById(R.id.secondConvert)
-                , (RelativeLayout) findViewById(R.id.thirdConvert)
-                , (RelativeLayout) findViewById(R.id.fourthConvert)
-                , (RelativeLayout) findViewById(R.id.fifthConvert)};
+        RelativeLayout[] layouts = {findViewById(R.id.firstConvert)
+                , findViewById(R.id.secondConvert)
+                , findViewById(R.id.thirdConvert)
+                , findViewById(R.id.fourthConvert)
+                , findViewById(R.id.fifthConvert)};
 
         for (int x = 0; x < mainTexts.length; x++) {
             final int y = x;
@@ -116,10 +115,10 @@ public class ConvertMainActivity extends AppCompatActivity {
         }
 
         setHex(hex, mainTexts[0]);
-        setInt(colorUtil.hexToColor(hex), mainTexts[1]);
-        setRgb(colorUtil.hexToRGB(hex), mainTexts[2]);
-        setSmali(colorUtil.hexToSmaliCode(hex), mainTexts[3]);
-        setOrigin(colorUtil.getClosestColor(colorUtil.hexToColor(hex)), mainTexts[4]);
+        setInt(ColorUtil.getInstance().hexToColor(hex), mainTexts[1]);
+        setRgb(ColorUtil.getInstance().hexToRGB(hex), mainTexts[2]);
+        setSmali(ColorUtil.getInstance().hexToSmaliCode(hex), mainTexts[3]);
+        setOrigin(ColorUtil.getInstance().getClosestColor(ColorUtil.getInstance().hexToColor(hex)), mainTexts[4]);
     }
 
     private void setHex(String hex, TextView editText) {
@@ -153,14 +152,14 @@ public class ConvertMainActivity extends AppCompatActivity {
 
     public void switchActivities(int c) {
         Intent intent = new Intent(ConvertMainActivity.this, ColorInfoDialog.class);
-        intent.putExtra("color", colorUtil.colorToHex(c));
+        intent.putExtra("color", ColorUtil.colorToHex(c));
         startActivity(intent);
     }
 
     @Override
     public boolean isFinishing() {
         if (ColorInfoDialog.isActive) {
-            switchActivities(colorUtil.hexToColor(hex));
+            switchActivities(ColorUtil.getInstance().hexToColor(hex));
         }
         return super.isFinishing();
     }
@@ -168,7 +167,7 @@ public class ConvertMainActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         if (ColorInfoDialog.isActive) {
-            switchActivities(colorUtil.hexToColor(hex));
+            switchActivities(ColorUtil.getInstance().hexToColor(hex));
         }
         super.onDestroy();
     }
