@@ -156,7 +156,7 @@ public class SearchColorActivity extends Activity {
         private class ViewHolder {
             LinearLayout llContainer;
             ImageView colorBox;
-            TextView tvName, tvPrice;
+            TextView colorName, colorPrice;
         }
 
         @Override
@@ -170,8 +170,8 @@ public class SearchColorActivity extends Activity {
                 convertView = inflater.inflate(R.layout.row, null);
                 holder.llContainer = convertView.findViewById(R.id.llContainer);
                 holder.colorBox = convertView.findViewById(R.id.colorImageViewSearch);
-                holder.tvName = convertView.findViewById(R.id.colorNameTextView);
-                holder.tvPrice = convertView.findViewById(R.id.hexValueTextView);
+                holder.colorName = convertView.findViewById(R.id.colorNameTextView);
+                holder.colorPrice = convertView.findViewById(R.id.hexValueTextView);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
@@ -179,9 +179,9 @@ public class SearchColorActivity extends Activity {
             Bitmap bit = imageUtil.colorToBitmap(mDisplayedValues.get(position).getColor(), 100, 100);
             bit = imageUtil.cropToCircleWithBorder(bit, Color.BLACK, 1.0f);
             holder.colorBox.setImageBitmap(bit);
-            holder.tvName.setText(mDisplayedValues.get(position).getName());
-            String text= "#" + mDisplayedValues.get(position).getName();
-            holder.tvPrice.setText(text);
+            holder.colorName.setText(mDisplayedValues.get(position).getName());
+            String text= "#" + mDisplayedValues.get(position).getHex();
+            holder.colorPrice.setText(text);
 
             holder.llContainer.setOnClickListener(new View.OnClickListener() {
 
@@ -190,8 +190,6 @@ public class SearchColorActivity extends Activity {
 
                     result.putExtra("HEX", mDisplayedValues.get(position).getHex());
                     setResult(ColorPickerMainActivity.SEARCH_COMPLETE, result);
-
-                    //PrefUtil.write(mDisplayedValues.get(position).hex, thisActivity);
 
                     thisActivity.finish();
                 }
