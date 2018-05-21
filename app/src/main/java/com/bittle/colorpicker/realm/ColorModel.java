@@ -33,10 +33,6 @@ public class ColorModel extends RealmObject {
         return this;
     }
 
-    public long getTimestamp() {
-        return timestamp;
-    }
-
     public String getHex() {
         return hex;
     }

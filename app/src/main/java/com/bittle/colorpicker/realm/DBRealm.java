@@ -50,10 +50,7 @@ public class DBRealm {
     }
 
     public RealmResults<ColorModel> findAll() {
-        RealmResults<ColorModel> results =
-                realm.where(ColorModel.class).sort("timestamp", Sort.DESCENDING).findAll();
-        //realm.close();
-        return results;
+        return realm.where(ColorModel.class).sort("timestamp", Sort.DESCENDING).findAll();
     }
 
     // clear db
@@ -64,8 +61,6 @@ public class DBRealm {
             realm.commitTransaction();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            //realm.close();
         }
     }
 
