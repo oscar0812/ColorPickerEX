@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -278,7 +279,7 @@ public class ImagePickerMainActivity extends AppCompatActivity {
 
         // ======= catch out of memory errors ======
         Bitmap bitmap = imageUtil.drawableToBitmap
-                (getResources().getDrawable(R.drawable.rotateright, this.getTheme()));
+                (ContextCompat.getDrawable(this, R.drawable.rotateright));
         try {
             optionsButton.setIconDrawable(imageUtil.bitmapToDrawable(bitmap));
         } catch (java.lang.OutOfMemoryError e1) {

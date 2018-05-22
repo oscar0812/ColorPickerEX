@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -383,18 +384,15 @@ public class ColorPickerMainActivity extends AppCompatActivity {
 
         FloatingActionButton lookUpButton = findViewById(R.id.action_a);
         lookUpButton.setSize(FloatingActionButton.SIZE_MINI);
-        lookUpButton.setIconDrawable(getResources().getDrawable(
-                R.drawable.magnify, this.getTheme()));
+        lookUpButton.setIconDrawable(ContextCompat.getDrawable(context, R.drawable.magnify));
 
         FloatingActionButton shareButton = findViewById(R.id.action_b);
         shareButton.setSize(FloatingActionButton.SIZE_MINI);
-        shareButton.setIconDrawable(getResources().getDrawable(
-                R.drawable.blackshare, this.getTheme()));
+        shareButton.setIconDrawable(ContextCompat.getDrawable(context, R.drawable.blackshare));
 
         FloatingActionButton historyButton = findViewById(R.id.action_c);
         historyButton.setSize(FloatingActionButton.SIZE_MINI);
-        historyButton.setIconDrawable(getResources().getDrawable(
-                R.drawable.letterh, this.getTheme()));
+        historyButton.setIconDrawable(ContextCompat.getDrawable(context, R.drawable.letterh));
 
         lookUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
