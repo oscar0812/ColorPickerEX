@@ -52,7 +52,7 @@ public class ImagePickerMainActivity extends AppCompatActivity {
     private final int GREATEST_WIDTH_FOR_CIRCLE = 200;
     private final int GREATEST_HEIGHT_FOR_CIRCLE = 200;
 
-    Activity thisActivity;
+    Context context;
     private int maxTexture;
     private static int mostDomColor;    // dominant color of image
 
@@ -66,7 +66,7 @@ public class ImagePickerMainActivity extends AppCompatActivity {
         StrictMode.setVmPolicy(builder.build());
 
         imageUtil = new ImageUtil(this);
-        thisActivity = this;
+        context = this;
         maxTexture = screenUtil.getMaxTexture();
 
         mainImageView = findViewById(R.id.mainImageView);
@@ -145,11 +145,9 @@ public class ImagePickerMainActivity extends AppCompatActivity {
                     try {
                         outputUri = Uri.fromFile(file);
                         intent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
-                        requestPermissions(thisActivity);
                         startActivityForResult(intent, CAMERA_ACTION);
                     } catch (Exception err) {
                         err.printStackTrace();
-                        Toaster.toast("ERROR IN DIALOG", thisActivity);
                     }
 
                 } else if (items[item].equals("Choose from Library")) {
@@ -205,7 +203,7 @@ public class ImagePickerMainActivity extends AppCompatActivity {
 
             } catch (java.lang.OutOfMemoryError err) {
                 try {
-                    String path = StringUtil.getPathFromUri(thisActivity, uri);
+                    String path = StringUtil.getPathFromUri(context, uri);
 
                     bitmap = imageUtil.fixOutOfMemoryError(path);
 
@@ -330,7 +328,7 @@ public class ImagePickerMainActivity extends AppCompatActivity {
                 selectImage();
                 break;
             default:
-                Toaster.toast("OOPS", thisActivity);
+                Toaster.toast("OOPS", context);
                 break;
         }
         return true;
