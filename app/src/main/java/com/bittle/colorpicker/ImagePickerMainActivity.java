@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -48,16 +49,10 @@ public class ImagePickerMainActivity extends AppCompatActivity {
     final int CAMERA_ACTION = 0;
     final int GALLEY_ACTION = 1;
 
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
-    private static final String[] PERMISSIONS_STORAGE = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-
     private final int GREATEST_WIDTH_FOR_CIRCLE = 200;
     private final int GREATEST_HEIGHT_FOR_CIRCLE = 200;
 
-    Context mainContext;
+    Activity thisActivity;
     private int maxTexture;
     private static int mostDomColor;    // dominant color of image
 
@@ -65,8 +60,13 @@ public class ImagePickerMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_picker_main);
+
+        // fix camera error on newer devices
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
         imageUtil = new ImageUtil(this);
-        mainContext = this;
+        thisActivity = this;
         maxTexture = screenUtil.getMaxTexture();
 
         mainImageView = findViewById(R.id.mainImageView);
@@ -127,8 +127,7 @@ public class ImagePickerMainActivity extends AppCompatActivity {
 
     private void selectImage() {
 
-        verifyStoragePermissions(this);
-
+        requestPermissions(this);
 
         final CharSequence[] items = {"Take Photo", "Choose from Library",
                 "Cancel"};
@@ -146,9 +145,11 @@ public class ImagePickerMainActivity extends AppCompatActivity {
                     try {
                         outputUri = Uri.fromFile(file);
                         intent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
+                        requestPermissions(thisActivity);
                         startActivityForResult(intent, CAMERA_ACTION);
                     } catch (Exception err) {
-                        Toaster.toast("Error in dialog!", mainContext);
+                        err.printStackTrace();
+                        Toaster.toast("ERROR IN DIALOG", thisActivity);
                     }
 
                 } else if (items[item].equals("Choose from Library")) {
@@ -170,7 +171,6 @@ public class ImagePickerMainActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == CAMERA_ACTION) {
                 setImageFromCamera(outputUri);
-
             } else if (requestCode == GALLEY_ACTION) {
                 setImageFromGallery(data);
             }
@@ -205,7 +205,7 @@ public class ImagePickerMainActivity extends AppCompatActivity {
 
             } catch (java.lang.OutOfMemoryError err) {
                 try {
-                    String path = StringUtil.getPathFromUri(mainContext, uri);
+                    String path = StringUtil.getPathFromUri(thisActivity, uri);
 
                     bitmap = imageUtil.fixOutOfMemoryError(path);
 
@@ -226,17 +226,30 @@ public class ImagePickerMainActivity extends AppCompatActivity {
         }
     }
 
-
-    // check if the app has permission to read and write to the sd card
+    // check if the app has permission to read and write to the sd card and access camera
     // if not, the user will be prompted to allow it
-    public static void verifyStoragePermissions(Activity activity) {
-        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    public static void requestPermissions(Activity activity) {
+        String[] PERMISSIONS = {
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        };
 
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // no permission
-            ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
+        int PERMISSION_ALL = 1;
 
+        if(!hasPermissions(activity, PERMISSIONS)){
+            ActivityCompat.requestPermissions(activity, PERMISSIONS, PERMISSION_ALL);
         }
+    }
+
+    private static boolean hasPermissions(Context context, String[] permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public void showColorInfoDialog() {
@@ -317,7 +330,7 @@ public class ImagePickerMainActivity extends AppCompatActivity {
                 selectImage();
                 break;
             default:
-                Toaster.toast("OOPS", mainContext);
+                Toaster.toast("OOPS", thisActivity);
                 break;
         }
         return true;
