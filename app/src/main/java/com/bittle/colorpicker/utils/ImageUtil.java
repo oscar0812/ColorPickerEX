@@ -8,9 +8,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -239,57 +236,6 @@ public class ImageUtil {
                     palette.getLightMutedColor(e), palette.getDarkMutedColor(e)};
         }
         return null;
-    }
-
-    public Bitmap cropToCircleWithBorder(Bitmap bitmap, int currentColor, float borderWidth,
-                                          boolean changeBorder) {
-        if(ColorUtil.getInstance().isDarkColor(currentColor) && changeBorder){
-            currentColor = Color.WHITE;
-        }
-        else if(!ColorUtil.getInstance().isDarkColor(currentColor) && changeBorder){
-            currentColor = Color.BLACK;
-        }
-        Bitmap output;
-
-        try {
-            output = Bitmap.createBitmap(
-                    bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        }catch(java.lang.OutOfMemoryError e){
-            String path = StringUtil.getPathFromUri(mainContext,
-                    bitmapToUri(bitmap));
-            bitmap = fixOutOfMemoryError(path);
-
-            output = Bitmap.createBitmap(
-                    bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-
-            deleteBitmap(path);
-        }
-
-        Canvas canvas = new Canvas(output);
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2, bitmap.getWidth() / 2, paint);
-
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-
-        paint.setColor(currentColor);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setAntiAlias(true);
-        paint.setStrokeWidth(borderWidth);
-
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2, bitmap.getWidth() / 2, paint);
-
-        return output;
-    }
-
-    public Bitmap cropToCircleWithBorder(Bitmap bitmap, int currentColor, float borderWidth){
-        return cropToCircleWithBorder(bitmap, currentColor, borderWidth, false);
     }
 
 

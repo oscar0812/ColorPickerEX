@@ -16,21 +16,22 @@
         android:layout_height="50dp"
         app:srcCompat="@color/colorTransparent"
         android:id="@+id/mainColorImageView"
-        android:background="@color/colorTransparent"
         android:layout_below="@+id/touchedColorTitle"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/circle_shape"
+        />
 
     <TextView
+        android:id="@+id/lighterTextViewDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/lighterTextViewDialog"
-        android:textAppearance="@android:style/TextAppearance.Material"
-        android:textColor="@android:color/background_dark"
-        android:textAlignment="center"
-        android:text="25% lighter"
-        android:layout_below="@+id/lighterImageViewDialog"
         android:layout_alignParentStart="true"
-        android:background="@color/colorTransparent" />
+        android:layout_below="@+id/lighterImageViewDialog"
+        android:background="@color/colorTransparent"
+        android:text="25% lighter"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.Material"
+        android:textColor="@android:color/background_dark" />
 
     <TextView
         android:text="Touched Color"
@@ -61,29 +62,30 @@
         android:layout_height="50dp"
         app:srcCompat="@color/colorTransparent"
         android:id="@+id/darkerImageViewDialog"
-        android:background="@color/colorTransparent"
         android:layout_below="@+id/currentHexTextViewDialog"
         android:layout_alignStart="@+id/mainColorImageView"
-        android:layout_above="@+id/lighterTextViewDialog" />
+        android:layout_above="@+id/lighterTextViewDialog"
+        android:background="@drawable/circle_shape"
+        />
 
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
         app:srcCompat="@color/colorTransparent"
         android:id="@+id/invertedImageViewDialog"
-        android:background="@color/colorTransparent"
         android:layout_below="@+id/currentHexTextViewDialog"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/circle_shape"/>
 
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
         app:srcCompat="@color/colorTransparent"
         android:id="@+id/lighterImageViewDialog"
-        android:background="@color/colorTransparent"
         android:layout_below="@+id/currentHexTextViewDialog"
         android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/lighterTextViewDialog" />
+        android:background="@drawable/circle_shape"
+        />
 
     <TextView
         android:layout_width="match_parent"
@@ -114,10 +116,11 @@
         android:layout_height="50dp"
         app:srcCompat="@color/colorTransparent"
         android:id="@+id/dominantImageViewDialog"
-        android:background="@color/colorTransparent"
         android:layout_marginTop="30dp"
         android:layout_below="@+id/darkerTextViewDialog"
-        android:layout_toStartOf="@+id/touchedColorTitle" />
+        android:layout_toStartOf="@+id/touchedColorTitle"
+        android:background="@drawable/circle_shape"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -136,9 +139,9 @@
         android:layout_height="50dp"
         app:srcCompat="@color/colorTransparent"
         android:id="@+id/averageImageViewDialog"
-        android:background="@color/colorTransparent"
         android:layout_above="@+id/dominantTextViewDialog"
-        android:layout_toEndOf="@+id/touchedColorTitle" />
+        android:layout_toEndOf="@+id/touchedColorTitle"
+        android:background="@drawable/circle_shape"/>
 
     <TextView
         android:layout_width="wrap_content"

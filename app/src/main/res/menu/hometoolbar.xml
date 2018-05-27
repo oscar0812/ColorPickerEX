@@ -4,13 +4,6 @@
     xmlns:android="http://schemas.android.com/apk/res-auto">
 
     <item
-        android2:id="@+id/cameraMenuAction"
-        android2:icon="@drawable/cameraico"
-        android2:orderInCategory="1"
-        android:showAsAction="always"
-        android2:title="" />
-
-    <item
         android2:id="@+id/colorPickMenuAction"
         android2:icon="@drawable/pump"
         android2:orderInCategory="2"

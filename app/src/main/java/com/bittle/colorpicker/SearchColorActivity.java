@@ -2,12 +2,13 @@ package com.bittle.colorpicker;
 
 //this is your activity with custom adapter and ListView
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -28,7 +29,6 @@ import android.widget.TextView;
 
 import com.bittle.colorpicker.realm.ColorModel;
 import com.bittle.colorpicker.utils.ColorUtil;
-import com.bittle.colorpicker.utils.ImageUtil;
 import com.bittle.colorpicker.utils.Toaster;
 
 import java.util.ArrayList;
@@ -157,6 +157,7 @@ public class SearchColorActivity extends Activity {
             TextView colorName, colorPrice;
         }
 
+        @SuppressLint("InflateParams")
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
 
@@ -174,9 +175,10 @@ public class SearchColorActivity extends Activity {
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            Bitmap bit = ImageUtil.getInstance(thisActivity.getApplicationContext()).colorToBitmap(mDisplayedValues.get(position).getColor(), 100, 100);
-            bit = ImageUtil.getInstance(thisActivity.getApplicationContext()).cropToCircleWithBorder(bit, Color.BLACK, 1.0f);
-            holder.colorBox.setImageBitmap(bit);
+            // set color
+            ((GradientDrawable)holder.colorBox.getBackground()).
+                    setColor(mDisplayedValues.get(position).getColor());
+
             holder.colorName.setText(mDisplayedValues.get(position).getName());
             String text= "#" + mDisplayedValues.get(position).getHex();
             holder.colorPrice.setText(text);

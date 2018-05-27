@@ -3,8 +3,7 @@ package com.bittle.colorpicker.dialogs;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.AnyRes;
 import android.view.View;
@@ -15,9 +14,9 @@ import com.bittle.colorpicker.ConvertMainActivity;
 import com.bittle.colorpicker.ImagePickerMainActivity;
 import com.bittle.colorpicker.R;
 import com.bittle.colorpicker.utils.ColorUtil;
-import com.bittle.colorpicker.utils.ImageUtil;
 import com.bittle.colorpicker.utils.StringUtil;
 
+// view with 5 circles
 public class ColorInfoDialog extends Activity {
 
     private final float BORDER_WIDTH = 70.0f;
@@ -48,9 +47,7 @@ public class ColorInfoDialog extends Activity {
         ImageView mainColorImageView = findViewById(R.id.mainColorImageView);
 
         final int mainColor = ImagePickerMainActivity.getCurrentColor();
-        Bitmap pic = ImageUtil.getInstance(this).colorToBitmap_CRISP(mainColor);
-        pic = ImageUtil.getInstance(this).cropToCircleWithBorder(pic, Color.BLACK, BORDER_WIDTH);
-        mainColorImageView.setImageBitmap(pic);
+        ((GradientDrawable)mainColorImageView.getBackground()).setColor(mainColor);
 
         TextView currentHexTextView = findViewById(R.id.currentHexTextViewDialog);
         String st = ("#" + ColorUtil.colorToHex(mainColor));
@@ -108,10 +105,8 @@ public class ColorInfoDialog extends Activity {
 
         ImageView view = findViewById(image_view);
 
-        Bitmap colorBitmap = ImageUtil.getInstance(this).colorToBitmap_CRISP(color);
-
-        colorBitmap = ImageUtil.getInstance(this).cropToCircleWithBorder(colorBitmap, Color.BLACK, BORDER_WIDTH);
-        view.setImageBitmap(colorBitmap);
+        // set color
+        ((GradientDrawable)view.getBackground()).setColor(color);
 
         TextView textView = findViewById(text_view);
         String text =  textView.getText().toString() + "\n#" + ColorUtil.colorToHex(color);

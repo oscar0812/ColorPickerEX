@@ -48,9 +48,11 @@
         android:layout_alignStart="@+id/separatorImageView"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:layout_margin="5dp" />
+        android:layout_margin="5dp"
+        android:background="@drawable/circle_shape"
+        />
 
-    <com.bittle.colorpicker.CustomImageView
+    <com.bittle.colorpicker.ImageView.CustomImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/mainImageView"

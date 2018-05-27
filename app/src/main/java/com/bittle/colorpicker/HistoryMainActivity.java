@@ -1,11 +1,12 @@
 package com.bittle.colorpicker;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -22,7 +23,6 @@ import android.widget.TextView;
 
 import com.bittle.colorpicker.realm.ColorModel;
 import com.bittle.colorpicker.realm.DBRealm;
-import com.bittle.colorpicker.utils.ImageUtil;
 import com.bittle.colorpicker.utils.Toaster;
 
 import java.util.ArrayList;
@@ -135,9 +135,10 @@ public class HistoryMainActivity extends AppCompatActivity {
         private class ViewHolder {
             LinearLayout llContainer;
             ImageView colorBox;
-            TextView tvName, tvPrice;
+            TextView name, hex;
         }
 
+        @SuppressLint("InflateParams")
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
 
@@ -149,21 +150,21 @@ public class HistoryMainActivity extends AppCompatActivity {
                 convertView = inflater.inflate(R.layout.row, null);
                 holder.llContainer = convertView.findViewById(R.id.llContainer);
                 holder.colorBox = convertView.findViewById(R.id.colorImageViewSearch);
-                holder.tvName = convertView.findViewById(R.id.colorNameTextView);
-                holder.tvPrice = convertView.findViewById(R.id.hexValueTextView);
+                holder.name = convertView.findViewById(R.id.colorNameTextView);
+                holder.hex = convertView.findViewById(R.id.hexValueTextView);
                 convertView.setTag(holder);
 
                 setMaxHeight();
             } else {
                 holder = (HistoryMainActivity.MyAdapter.ViewHolder) convertView.getTag();
             }
-            Bitmap bit = ImageUtil.getInstance(thisActivity.getApplicationContext()).colorToBitmap(mDisplayedValues.get(position).getColor(), 100, 100);
-            bit = ImageUtil.getInstance(thisActivity.getApplicationContext()).cropToCircleWithBorder(bit, Color.BLACK, 1.0f);
-            //bit = imageUtil.cropToCircle(bit);
-            holder.colorBox.setImageBitmap(bit);
-            holder.tvName.setText(mDisplayedValues.get(position).getName());
+            // set color
+            ((GradientDrawable)holder.colorBox.getBackground()).
+                    setColor(mDisplayedValues.get(position).getColor());
+
+            holder.name.setText(mDisplayedValues.get(position).getName());
             String text = "#" + mDisplayedValues.get(position).getHex();
-            holder.tvPrice.setText(text);
+            holder.hex.setText(text);
 
             holder.llContainer.setOnClickListener(new View.OnClickListener() {
 

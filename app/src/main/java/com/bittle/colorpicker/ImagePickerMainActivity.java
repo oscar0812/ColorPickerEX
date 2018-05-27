@@ -7,7 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -73,18 +73,11 @@ public class ImagePickerMainActivity extends BaseDrawerActivity {
         mainImageView.setMaxScale(9000.0f);
 
         mainImageView.setOnTouchImageViewListener(new CustomImageView.OnTouchImageViewListener() {
-            Bitmap pic = null;
 
             @Override
             public void onMove(int color) {
-                colorImageView.setVisibility(View.VISIBLE);
-
-                pic = ImageUtil.getInstance(context).colorToBitmap(color,
-                        GREATEST_WIDTH_FOR_CIRCLE, GREATEST_HEIGHT_FOR_CIRCLE);
-                pic = ImageUtil.getInstance(context).cropToCircleWithBorder(pic, Color.BLACK,
-                        12.0f, !ImageUtil.CHANGE_BORDER);
-
-                colorImageView.setImageBitmap(pic);
+                // set color
+                ((GradientDrawable)colorImageView.getBackground()).setColor(color);
                 currentColor = color;
             }
         });
@@ -97,13 +90,9 @@ public class ImagePickerMainActivity extends BaseDrawerActivity {
                 selectImage();
             } else {
                 setImageFromCamera(ColorPickerMainActivity.imageUri);
-                colorImageView.setVisibility(View.VISIBLE);
 
-                Bitmap pic = ImageUtil.getInstance(context).colorToBitmap(currentColor,
-                        GREATEST_WIDTH_FOR_CIRCLE, GREATEST_HEIGHT_FOR_CIRCLE);
-                pic = ImageUtil.getInstance(context).cropToCircleWithBorder(pic, Color.BLACK,
-                        12.0f);
-                colorImageView.setImageBitmap(pic);
+                // set color
+                ((GradientDrawable)colorImageView.getBackground()).setColor(currentColor);
             }
         }
 

@@ -178,10 +178,7 @@ public class ColorPickerMainActivity extends BaseDrawerActivity {
         //hideFAB();
 
         switch (item.getItemId()) {
-            case R.id.cameraMenuAction:
-                // what to do if camera icon is touched?
-                switchActivities(null);
-                break;
+            // if pump is touched on toolbar
             case R.id.colorPickMenuAction:
                 showColorDialog();
                 break;
