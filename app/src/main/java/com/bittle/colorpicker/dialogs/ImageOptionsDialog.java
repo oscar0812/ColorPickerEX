@@ -36,8 +36,8 @@ public class ImageOptionsDialog extends Dialog implements View.OnClickListener {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialoglayout);
 
-        left = (ImageView) findViewById(R.id.rotateLeftImageView);
-        right = (ImageView) findViewById(R.id.rotateRightImageView);
+        left = findViewById(R.id.rotateLeftImageView);
+        right = findViewById(R.id.rotateRightImageView);
 
         left.setOnClickListener(this);
         right.setOnClickListener(this);
