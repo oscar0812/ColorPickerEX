@@ -93,6 +93,9 @@ public class BaseDrawerActivity extends AppCompatActivity implements
             case R.id.nav_camera:
                 startActivity(new Intent(this, ImagePickerMainActivity.class));
                 return true;
+            case R.id.nav_share:
+                shareApp();
+                return true;
                 /*
             case R.id.action_other:
                 startActivity(new Intent(this, OtherActivity.class));
@@ -123,5 +126,17 @@ public class BaseDrawerActivity extends AppCompatActivity implements
                 e.printStackTrace();
             }
         }
+    }
+
+    public void shareApp() {
+        String text = "Check out \"Color Picker EX\" -\nhttps://play.google.com/store" +
+                "/apps/details?id=com.bittle.colorpicker";
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+        sendIntent.setType("text/plain");
+        startActivity(Intent.createChooser(
+                sendIntent, getResources().getText(R.string.send_to)));
+
     }
 }

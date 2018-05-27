@@ -79,14 +79,6 @@
             app:fab_colorPressed="@color/white_pressed"
             app:fab_title="History" />
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/action_b"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_colorNormal="@color/white"
-            app:fab_colorPressed="@color/white_pressed"
-            app:fab_title="Share" />
-
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </RelativeLayout>

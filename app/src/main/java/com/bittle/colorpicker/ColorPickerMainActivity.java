@@ -336,33 +336,15 @@ public class ColorPickerMainActivity extends BaseDrawerActivity {
                 .show();
     }
 
-    public void shareButton(String text) {
-        if (text.length() >= 6) {
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, text);
-            sendIntent.setType("text/plain");
-            startActivity(Intent.createChooser(
-                    sendIntent, getResources().getText(R.string.send_to)));
-        } else {
-            Toaster.toast("Invalid Hex ColorPickerMainActivity", context);
-        }
-    }
-
     FloatingActionsMenu menu;
     Context context = this;
 
     public void FABFunctions() {
-        final FloatingActionsMenu menu = findViewById(R.id.multiple_actions);
-        this.menu = menu;
+        this.menu = findViewById(R.id.multiple_actions);
 
         FloatingActionButton lookUpButton = findViewById(R.id.action_a);
         lookUpButton.setSize(FloatingActionButton.SIZE_MINI);
         lookUpButton.setIconDrawable(ContextCompat.getDrawable(context, R.drawable.magnify));
-
-        FloatingActionButton shareButton = findViewById(R.id.action_b);
-        shareButton.setSize(FloatingActionButton.SIZE_MINI);
-        shareButton.setIconDrawable(ContextCompat.getDrawable(context, R.drawable.blackshare));
 
         FloatingActionButton historyButton = findViewById(R.id.action_c);
         historyButton.setSize(FloatingActionButton.SIZE_MINI);
@@ -372,16 +354,6 @@ public class ColorPickerMainActivity extends BaseDrawerActivity {
             @Override
             public void onClick(View view) {
                 openSearch();
-            }
-        });
-
-        shareButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String str = "Check out \"Color Picker EX\" -\nhttps://play.google.com/store" +
-                        "/apps/details?id=com.bittle.colorpicker";
-                shareButton(str);
-                menu.collapse();
             }
         });
 
