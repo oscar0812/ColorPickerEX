@@ -9,6 +9,7 @@ import android.opengl.EGLContext;
 import android.opengl.EGLDisplay;
 import android.opengl.EGLSurface;
 import android.opengl.GLES20;
+import android.widget.Toast;
 
 /**
  * Created by Bittle on 2/4/17.
@@ -74,7 +75,7 @@ public class ScreenUtil {
             WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
             wallpaperManager.setBitmap(bit);
         } catch (Exception e) {
-            Toaster.toast("Couldn\'t set wallpaper!", context);
+            Toast.makeText(context, "Couldn\'t set wallpaper!", Toast.LENGTH_LONG).show();
         }
     }
 

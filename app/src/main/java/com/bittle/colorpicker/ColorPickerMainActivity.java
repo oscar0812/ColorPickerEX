@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bittle.colorpicker.dialogs.ColorInfoDialog;
 import com.bittle.colorpicker.realm.DBRealm;
@@ -25,7 +26,6 @@ import com.bittle.colorpicker.utils.ColorUtil;
 import com.bittle.colorpicker.utils.ImageUtil;
 import com.bittle.colorpicker.utils.ScreenUtil;
 import com.bittle.colorpicker.utils.StringUtil;
-import com.bittle.colorpicker.utils.Toaster;
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorSelectedListener;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
@@ -112,7 +112,7 @@ public class ColorPickerMainActivity extends BaseDrawerActivity {
                                 color);
                     }
                 } catch (Exception e) {
-                    Toaster.toast("INVALID HEX", context);
+                    Toast.makeText(context, "INVALID HEX", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -396,7 +396,7 @@ public class ColorPickerMainActivity extends BaseDrawerActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 ScreenUtil.setWallpaperFromColor(color, context);
-                Toaster.toast("Wallpaper set", context);
+                Toast.makeText(context, "Wallpaper set", Toast.LENGTH_LONG).show();
             }
         });
         builder.show();

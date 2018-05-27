@@ -26,10 +26,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bittle.colorpicker.realm.ColorModel;
 import com.bittle.colorpicker.utils.ColorUtil;
-import com.bittle.colorpicker.utils.Toaster;
 
 import java.util.ArrayList;
 
@@ -198,7 +198,7 @@ public class SearchColorActivity extends Activity {
             holder.llContainer.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    Toaster.toast("HELD", view.getContext());
+                    Toast.makeText(view.getContext(), "HELD", Toast.LENGTH_LONG).show();
                     return false;
                 }
             });

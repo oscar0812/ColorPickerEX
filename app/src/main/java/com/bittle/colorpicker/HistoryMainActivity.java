@@ -20,10 +20,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bittle.colorpicker.realm.ColorModel;
 import com.bittle.colorpicker.realm.DBRealm;
-import com.bittle.colorpicker.utils.Toaster;
 
 import java.util.ArrayList;
 
@@ -59,7 +59,7 @@ public class HistoryMainActivity extends AppCompatActivity {
                 //  clear color db
                 DBRealm.getInstance(thisActivity.getApplicationContext()).clearAll();
                 mColorNameArrayList.clear();
-                Toaster.toast("History Cleared.", thisActivity.getApplicationContext());
+                Toast.makeText(thisActivity.getApplicationContext(), "History Cleared", Toast.LENGTH_LONG).show();
                 finish();
             }
         });

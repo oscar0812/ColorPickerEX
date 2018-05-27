@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bittle.colorpicker.realm.DBRealm;
 
@@ -174,9 +175,9 @@ public class StringUtil {
             ClipData clip = ClipData.newPlainText("text", text);
             assert clipboard != null;
             clipboard.setPrimaryClip(clip);
-            Toaster.toast("Copied To Clipboard", c);
+            Toast.makeText(c, "Copied To Clipboard", Toast.LENGTH_LONG).show();
         } else {
-            Toaster.toast("Invalid Hex Code", c);
+            Toast.makeText(c, "Invalid Hex Code", Toast.LENGTH_LONG).show();
         }
     }
 
