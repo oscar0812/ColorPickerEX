@@ -101,7 +101,7 @@ public class ImageUtil {
 
     // -values is left
     // +values is right
-    public void rotateImage(ImageView view, int angle) {
+    public static void rotateImage(ImageView view, int angle) {
         try {
 
             Bitmap bitmap = ((BitmapDrawable) view.getDrawable()).getBitmap();
@@ -112,11 +112,11 @@ public class ImageUtil {
         } catch (java.lang.OutOfMemoryError err) {
             Log.d("ERROR", err.toString());
         } catch (Exception err2) {
-            Toaster.toast("Please select an image first", mainContext);
+            err2.printStackTrace();
         }
     }
 
-    public Bitmap rotateImage(Bitmap bitmap, int angle) {
+    public static Bitmap rotateImage(Bitmap bitmap, int angle) {
         try {
             Matrix matrix = new Matrix();
             matrix.postRotate(angle);
@@ -128,7 +128,7 @@ public class ImageUtil {
             Log.d("ERROR = ", err.toString());
             return null;
         } catch (java.lang.NullPointerException err2) {
-            Toaster.toast("Please select an image first", mainContext);
+            err2.printStackTrace();
             return null;
         }
     }

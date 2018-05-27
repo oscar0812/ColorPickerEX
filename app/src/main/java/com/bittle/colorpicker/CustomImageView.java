@@ -48,8 +48,6 @@ public class CustomImageView extends android.support.v7.widget.AppCompatImageVie
     // use for current pixel chosen
     private float currentX, currentY;
 
-    public ImageUtil imageUtil;
-
 	//
 	// SuperMin and SuperMax multipliers. Determine how much the image can be
 	// zoomed below or above the zoom boundaries, before animating back to the
@@ -1302,10 +1300,10 @@ public class CustomImageView extends android.support.v7.widget.AppCompatImageVie
     }
 
     public void rotateImageLeft(){
-        imageUtil.rotateImage(this, -FLIP_ANGLE);
+        ImageUtil.rotateImage(this, -FLIP_ANGLE);
     }
     public void rotateImageRight(){
-        imageUtil.rotateImage(this, FLIP_ANGLE);
+        ImageUtil.rotateImage(this, FLIP_ANGLE);
     }
 
     // returns the current color being touched, even if its zoomed in
