@@ -1,4 +1,4 @@
-package com.bittle.colorpicker.Dialogs;
+package com.bittle.colorpicker.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -11,7 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.bittle.colorpicker.ImageView.CustomImageView;
+import com.bittle.colorpicker.CustomImageView;
 import com.bittle.colorpicker.R;
 import com.bittle.colorpicker.utils.ImageUtil;
 

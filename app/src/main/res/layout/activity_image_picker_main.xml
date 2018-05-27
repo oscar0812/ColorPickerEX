@@ -50,7 +50,7 @@
         android:layout_height="45dp"
         android:layout_margin="5dp" />
 
-    <com.bittle.colorpicker.ImageView.CustomImageView
+    <com.bittle.colorpicker.CustomImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/mainImageView"

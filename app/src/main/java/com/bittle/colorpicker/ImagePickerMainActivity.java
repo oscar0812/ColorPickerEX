@@ -23,9 +23,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.bittle.colorpicker.Dialogs.ColorInfoDialog;
-import com.bittle.colorpicker.Dialogs.ImageOptionsDialog;
-import com.bittle.colorpicker.ImageView.CustomImageView;
+import com.bittle.colorpicker.dialogs.ColorInfoDialog;
+import com.bittle.colorpicker.dialogs.ImageOptionsDialog;
 import com.bittle.colorpicker.utils.ColorUtil;
 import com.bittle.colorpicker.utils.ImageUtil;
 import com.bittle.colorpicker.utils.ScreenUtil;

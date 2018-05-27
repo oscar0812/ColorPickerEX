@@ -1,4 +1,4 @@
-package com.bittle.colorpicker.Dialogs;
+package com.bittle.colorpicker.dialogs;
 
 import android.app.Activity;
 import android.content.Context;

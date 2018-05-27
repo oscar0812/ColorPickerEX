@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bittle.colorpicker.Dialogs.ColorInfoDialog;
+import com.bittle.colorpicker.dialogs.ColorInfoDialog;
 
 import com.bittle.colorpicker.utils.ColorUtil;
 import com.bittle.colorpicker.utils.StringUtil;

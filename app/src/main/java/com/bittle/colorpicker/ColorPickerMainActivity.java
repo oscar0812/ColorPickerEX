@@ -19,7 +19,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bittle.colorpicker.Dialogs.ColorInfoDialog;
+import com.bittle.colorpicker.dialogs.ColorInfoDialog;
 import com.bittle.colorpicker.realm.DBRealm;
 import com.bittle.colorpicker.utils.ColorUtil;
 import com.bittle.colorpicker.utils.ImageUtil;

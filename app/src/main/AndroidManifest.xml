@@ -44,7 +44,7 @@
             android:resource="@xml/provider_paths" />
 
         <activity
-            android:name=".Dialogs.ColorInfoDialog"
+            android:name=".dialogs.ColorInfoDialog"
             android:theme="@style/TransparentDialog" />
         <activity
             android:name=".ConvertMainActivity"
