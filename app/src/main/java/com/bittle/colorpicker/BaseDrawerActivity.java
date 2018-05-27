@@ -99,7 +99,8 @@ public class BaseDrawerActivity extends AppCompatActivity implements
 
         switch (id) {
             case R.id.nav_home:
-                startActivity(new Intent(this, ColorPickerMainActivity.class));
+                Intent intent = new Intent(this, ColorPickerMainActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.nav_camera:
                 startActivity(new Intent(this, ImagePickerMainActivity.class));
