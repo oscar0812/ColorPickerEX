@@ -52,13 +52,12 @@
         android:background="@drawable/circle_shape"
         />
 
-    <com.bittle.colorpicker.ImageView.CustomImageView
+    <com.bittle.colorpicker.CustomImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/mainImageView"
         android:src="@color/colorTransparent"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/separatorImageView" />
-
-
+    
 </RelativeLayout>
