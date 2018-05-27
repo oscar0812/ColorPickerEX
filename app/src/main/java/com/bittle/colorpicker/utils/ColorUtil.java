@@ -210,7 +210,7 @@ public class ColorUtil {
     public static String getClosestColor(ColorModel current) {
         ColorModel closestMatch = null;
         double minMSE = Integer.MAX_VALUE;
-        for (ColorModel c : colorList) {
+        for (ColorModel c : getColorList()) {
             double t = computeClosestColor_CIEDE2000(current, c);
             if (t < minMSE) {
                 minMSE = t;
