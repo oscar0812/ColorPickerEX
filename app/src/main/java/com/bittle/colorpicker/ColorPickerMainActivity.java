@@ -345,7 +345,7 @@ public class ColorPickerMainActivity extends BaseDrawerActivity {
             startActivity(Intent.createChooser(
                     sendIntent, getResources().getText(R.string.send_to)));
         } else {
-            Toaster.toast("Invalid Hex ColorModel", context);
+            Toaster.toast("Invalid Hex ColorPickerMainActivity", context);
         }
     }
 
@@ -378,7 +378,7 @@ public class ColorPickerMainActivity extends BaseDrawerActivity {
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String str = "Check out \"ColorModel Picker EX\" -\nhttps://play.google.com/store" +
+                String str = "Check out \"Color Picker EX\" -\nhttps://play.google.com/store" +
                         "/apps/details?id=com.bittle.colorpicker";
                 shareButton(str);
                 menu.collapse();

@@ -117,7 +117,7 @@ public class ImagePickerMainActivity extends BaseDrawerActivity {
                 "Cancel"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ImagePickerMainActivity.this);
-        builder.setTitle("Get ColorModel From Image");
+        builder.setTitle("Get Color From Image");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
