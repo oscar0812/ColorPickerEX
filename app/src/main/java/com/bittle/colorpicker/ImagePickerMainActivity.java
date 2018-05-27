@@ -45,9 +45,6 @@ public class ImagePickerMainActivity extends BaseDrawerActivity {
     final int CAMERA_ACTION = 0;
     final int GALLEY_ACTION = 1;
 
-    private final int GREATEST_WIDTH_FOR_CIRCLE = 200;
-    private final int GREATEST_HEIGHT_FOR_CIRCLE = 200;
-
     Context context;
     private int maxTexture;
     private static int mostDomColor;    // dominant color of image

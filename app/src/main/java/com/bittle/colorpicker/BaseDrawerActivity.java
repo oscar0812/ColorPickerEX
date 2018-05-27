@@ -23,11 +23,12 @@ public class BaseDrawerActivity extends AppCompatActivity implements
     private NavigationView navigationView;
     private DrawerLayout fullLayout;
     private Toolbar toolbar;
-    private int selectedNavItemId;
+    private int layoutResID;
 
     @SuppressLint("InflateParams")
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
+        this.layoutResID = layoutResID;
         fullLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_navigation, null);
         FrameLayout activityContainer = fullLayout.findViewById(R.id.activity_content);
         getLayoutInflater().inflate(layoutResID, activityContainer, true);
@@ -64,7 +65,7 @@ public class BaseDrawerActivity extends AppCompatActivity implements
             // Use home/back button instead
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(getResources()
-                    .getDrawable(R.drawable.magnify));
+                    .getDrawable(R.drawable.home));
         }
     }
 
@@ -76,9 +77,12 @@ public class BaseDrawerActivity extends AppCompatActivity implements
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         fullLayout.closeDrawer(GravityCompat.START);
-        selectedNavItemId = menuItem.getItemId();
-
         return onOptionsItemSelected(menuItem);
+    }
+
+    private boolean clickedSameActivity(int item_id) {
+        return (layoutResID == R.layout.activity_color_picker_main && item_id == R.id.nav_home)
+                || (layoutResID == R.layout.activity_image_picker_main && item_id == R.id.nav_camera);
     }
 
     @Override
@@ -88,29 +92,22 @@ public class BaseDrawerActivity extends AppCompatActivity implements
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
+        if(clickedSameActivity(id)){
+            // if clicked same activity don't do anything
+            return true;
+        }
 
         switch (id) {
+            case R.id.nav_home:
+                startActivity(new Intent(this, ColorPickerMainActivity.class));
+                return true;
             case R.id.nav_camera:
                 startActivity(new Intent(this, ImagePickerMainActivity.class));
                 return true;
             case R.id.nav_share:
                 shareApp();
                 return true;
-                /*
-            case R.id.action_other:
-                startActivity(new Intent(this, OtherActivity.class));
-                return true;
-
-            case R.id.action_noHamburger :
-                startActivity(new Intent(this, NoHamburger.class));
-                return true;
-
-            case R.id.action_noToolbar :
-                startActivity(new Intent(this, NoToolbar.class));
-                return true;
-                */
         }
-
         return super.onOptionsItemSelected(item);
     }
 
