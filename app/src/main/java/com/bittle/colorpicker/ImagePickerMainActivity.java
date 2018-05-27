@@ -16,7 +16,6 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,15 +30,13 @@ import com.bittle.colorpicker.utils.ColorUtil;
 import com.bittle.colorpicker.utils.ImageUtil;
 import com.bittle.colorpicker.utils.ScreenUtil;
 import com.bittle.colorpicker.utils.StringUtil;
-import com.bittle.colorpicker.utils.Toaster;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.io.File;
 
-public class ImagePickerMainActivity extends AppCompatActivity {
+public class ImagePickerMainActivity extends BaseDrawerActivity {
 
-    private ImageUtil imageUtil;
     ScreenUtil screenUtil = new ScreenUtil();
 
     private CustomImageView mainImageView;
@@ -65,7 +62,6 @@ public class ImagePickerMainActivity extends AppCompatActivity {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
-        imageUtil = new ImageUtil(this);
         context = this;
         maxTexture = screenUtil.getMaxTexture();
 
@@ -84,9 +80,9 @@ public class ImagePickerMainActivity extends AppCompatActivity {
             public void onMove(int color) {
                 colorImageView.setVisibility(View.VISIBLE);
 
-                pic = imageUtil.colorToBitmap(color,
+                pic = ImageUtil.getInstance(context).colorToBitmap(color,
                         GREATEST_WIDTH_FOR_CIRCLE, GREATEST_HEIGHT_FOR_CIRCLE);
-                pic = imageUtil.cropToCircleWithBorder(pic, Color.BLACK,
+                pic = ImageUtil.getInstance(context).cropToCircleWithBorder(pic, Color.BLACK,
                         12.0f, !ImageUtil.CHANGE_BORDER);
 
                 colorImageView.setImageBitmap(pic);
@@ -104,9 +100,9 @@ public class ImagePickerMainActivity extends AppCompatActivity {
                 setImageFromCamera(ColorPickerMainActivity.imageUri);
                 colorImageView.setVisibility(View.VISIBLE);
 
-                Bitmap pic = imageUtil.colorToBitmap(currentColor,
+                Bitmap pic = ImageUtil.getInstance(context).colorToBitmap(currentColor,
                         GREATEST_WIDTH_FOR_CIRCLE, GREATEST_HEIGHT_FOR_CIRCLE);
-                pic = imageUtil.cropToCircleWithBorder(pic, Color.BLACK,
+                pic = ImageUtil.getInstance(context).cropToCircleWithBorder(pic, Color.BLACK,
                         12.0f);
                 colorImageView.setImageBitmap(pic);
             }
@@ -188,14 +184,14 @@ public class ImagePickerMainActivity extends AppCompatActivity {
 
         ColorPickerMainActivity.imageUri = uri;
 
-        Bitmap bitmap = imageUtil.loadImageFromGallery(uri);
+        Bitmap bitmap = ImageUtil.getInstance(context).loadImageFromGallery(uri);
 
         if (bitmap != null) {
             try {
-                bitmap = imageUtil.makeBitmapFit(bitmap, maxTexture);
+                bitmap = ImageUtil.getInstance(context).makeBitmapFit(bitmap, maxTexture);
 
                 if (bitmap.getWidth() > bitmap.getHeight()) {
-                    bitmap = imageUtil.rotateImage(bitmap, ImageUtil.ROTATE_RIGHT_90);
+                    bitmap = ImageUtil.getInstance(context).rotateImage(bitmap, ImageUtil.ROTATE_RIGHT_90);
                 }
 
                 mainImageView.setImageBitmap(bitmap);
@@ -205,17 +201,17 @@ public class ImagePickerMainActivity extends AppCompatActivity {
                 try {
                     String path = StringUtil.getPathFromUri(context, uri);
 
-                    bitmap = imageUtil.fixOutOfMemoryError(path);
+                    bitmap = ImageUtil.getInstance(context).fixOutOfMemoryError(path);
 
-                    bitmap = imageUtil.makeBitmapFit(bitmap, maxTexture);
+                    bitmap = ImageUtil.getInstance(context).makeBitmapFit(bitmap, maxTexture);
 
                     if (bitmap.getWidth() > bitmap.getHeight()) {
-                        bitmap = imageUtil.rotateImage(bitmap, ImageUtil.ROTATE_RIGHT_90);
+                        bitmap = ImageUtil.getInstance(context).rotateImage(bitmap, ImageUtil.ROTATE_RIGHT_90);
                     }
 
                     mainImageView.setImageBitmap(bitmap);
                     setDominantColor();
-                    imageUtil.deleteBitmap(path);
+                    ImageUtil.getInstance(context).deleteBitmap(path);
 
                 } catch (Exception e) {
                     Log.e("ERROR", e.toString());
@@ -253,7 +249,7 @@ public class ImagePickerMainActivity extends AppCompatActivity {
     public void showColorInfoDialog() {
 
         Intent intent = new Intent(ImagePickerMainActivity.this, ColorInfoDialog.class);
-        int hex = ColorUtil.getInstance().getAverageColor(imageUtil.drawableToBitmap(
+        int hex = ColorUtil.getInstance().getAverageColor(ImageUtil.getInstance(context).drawableToBitmap(
                 mainImageView.getDrawable()));
         intent.putExtra("average", ColorUtil.colorToHex(hex));
 
@@ -263,7 +259,7 @@ public class ImagePickerMainActivity extends AppCompatActivity {
     private void setDominantColor() {
         if (mainImageView.getDrawable() != null) {
             mostDomColor = ColorUtil.getInstance().getDominantColor(
-                    imageUtil.drawableToBitmap(mainImageView.getDrawable()));
+                    ImageUtil.getInstance(context).drawableToBitmap(mainImageView.getDrawable()));
         }
     }
 
@@ -289,15 +285,15 @@ public class ImagePickerMainActivity extends AppCompatActivity {
         optionsButton.setSize(FloatingActionButton.SIZE_MINI);
 
         // ======= catch out of memory errors ======
-        Bitmap bitmap = imageUtil.drawableToBitmap
+        Bitmap bitmap = ImageUtil.getInstance(context).drawableToBitmap
                 (ContextCompat.getDrawable(this, R.drawable.rotateright));
         try {
-            optionsButton.setIconDrawable(imageUtil.bitmapToDrawable(bitmap));
+            optionsButton.setIconDrawable(ImageUtil.bitmapToDrawable(bitmap, context));
         } catch (java.lang.OutOfMemoryError e1) {
-            String path = imageUtil.bitmapToPath(bitmap);
-            bitmap = imageUtil.fixOutOfMemoryError(path);
-            optionsButton.setIconDrawable(imageUtil.bitmapToDrawable(bitmap));
-            imageUtil.deleteBitmap(path);
+            String path = ImageUtil.getInstance(context).bitmapToPath(bitmap);
+            bitmap = ImageUtil.getInstance(context).fixOutOfMemoryError(path);
+            optionsButton.setIconDrawable(ImageUtil.bitmapToDrawable(bitmap, context));
+            ImageUtil.getInstance(context).deleteBitmap(path);
         }
 
 
@@ -327,10 +323,7 @@ public class ImagePickerMainActivity extends AppCompatActivity {
             case R.id.cameraMenuAction2:
                 selectImage();
                 break;
-            default:
-                Toaster.toast("OOPS", context);
-                break;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 }

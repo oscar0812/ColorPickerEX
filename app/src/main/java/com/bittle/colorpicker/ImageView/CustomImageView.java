@@ -36,13 +36,12 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.ImageView;
 import android.widget.OverScroller;
 import android.widget.Scroller;
 
 import com.bittle.colorpicker.utils.ImageUtil;
 
-public class CustomImageView extends ImageView {
+public class CustomImageView extends android.support.v7.widget.AppCompatImageView {
 	
 	private static final String DEBUG = "DEBUG";
     private final int FLIP_ANGLE = 90;
@@ -125,7 +124,6 @@ public class CustomImageView extends ImageView {
     private void sharedConstructing(Context context) {
         super.setClickable(true);
         this.context = context;
-        imageUtil = new ImageUtil(context);
         mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
         mGestureDetector = new GestureDetector(context, new GestureListener());
         matrix = new Matrix();

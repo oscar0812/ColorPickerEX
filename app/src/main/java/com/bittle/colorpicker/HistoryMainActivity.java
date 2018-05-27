@@ -32,7 +32,6 @@ import io.realm.RealmResults;
 public class HistoryMainActivity extends AppCompatActivity {
 
     Activity thisActivity;
-    ImageUtil imageUtil;
     private ListView lvColorNames;
 
     private ArrayList<ColorModel> mColorNameArrayList = new ArrayList<>();
@@ -44,7 +43,6 @@ public class HistoryMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_history_main);
 
         thisActivity = this;
-        imageUtil = new ImageUtil(this);
 
         initialize();
         addToList();
@@ -159,8 +157,8 @@ public class HistoryMainActivity extends AppCompatActivity {
             } else {
                 holder = (HistoryMainActivity.MyAdapter.ViewHolder) convertView.getTag();
             }
-            Bitmap bit = imageUtil.colorToBitmap(mDisplayedValues.get(position).getColor(), 100, 100);
-            bit = imageUtil.cropToCircleWithBorder(bit, Color.BLACK, 1.0f);
+            Bitmap bit = ImageUtil.getInstance(thisActivity.getApplicationContext()).colorToBitmap(mDisplayedValues.get(position).getColor(), 100, 100);
+            bit = ImageUtil.getInstance(thisActivity.getApplicationContext()).cropToCircleWithBorder(bit, Color.BLACK, 1.0f);
             //bit = imageUtil.cropToCircle(bit);
             holder.colorBox.setImageBitmap(bit);
             holder.tvName.setText(mDisplayedValues.get(position).getName());

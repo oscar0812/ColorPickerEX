@@ -3,13 +3,11 @@ package com.bittle.colorpicker;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.TextKeyListener;
@@ -17,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -36,7 +33,7 @@ import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
-public class ColorPickerMainActivity extends AppCompatActivity {
+public class ColorPickerMainActivity extends BaseDrawerActivity {
     private RelativeLayout mainAppLayout;
     private EditText mainEditText;
     public static final int SEARCH_COMPLETE = 0;
@@ -44,13 +41,11 @@ public class ColorPickerMainActivity extends AppCompatActivity {
     int currentColor = Color.parseColor("#EEEEEE");
     protected static Uri imageUri = null;
     private ScreenUtil screenUtil = new ScreenUtil();
-    private ImageUtil imageUtil = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_color_picker_main);
-        imageUtil = new ImageUtil(this);
         FABFunctions();
 
         final EditText mainTextBox = findViewById(R.id.hexTextBoxConvert);
@@ -190,31 +185,13 @@ public class ColorPickerMainActivity extends AppCompatActivity {
             case R.id.colorPickMenuAction:
                 showColorDialog();
                 break;
-            default:
-                Toaster.toast("OOPS", context);
-                break;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
 
     public boolean isLegalChar(char a) {
         return (a >= '0' && a <= '9') || (a >= 'a' && a <= 'f') || (a >= 'A' && a <= 'F');
-    }
-
-
-    public void hideKeyboard() {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            try {
-                InputMethodManager input = (InputMethodManager)
-                        getSystemService(Context.INPUT_METHOD_SERVICE);
-                assert input != null;
-                input.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            } catch (java.lang.NullPointerException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public void changeColors(final EditText editText, final TextView hexSign, final int color) {
@@ -440,8 +417,7 @@ public class ColorPickerMainActivity extends AppCompatActivity {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Set Wallpaper");
         builder.setMessage("Want to set this color as your Wallpaper?");
-        Bitmap bitmap = imageUtil.colorToBitmap(currentColor, 100, 100);
-        builder.setIcon(imageUtil.bitmapToDrawable(bitmap));
+        builder.setIcon(ImageUtil.colorToDrawable(context, currentColor, 100, 100));
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

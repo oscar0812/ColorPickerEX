@@ -75,9 +75,8 @@ public class ScreenUtil {
     }
 
     public void setWallpaperImage_FROM_COLOR(int color, Context context){
-        ImageUtil imageUtil = new ImageUtil(context);
         int w = 1;
-        Bitmap bitmap = imageUtil.colorToBitmap(color, w,w);
+        Bitmap bitmap = ImageUtil.getInstance(context).colorToBitmap(color, w,w);
         setWallpaperImage(bitmap, context);
     }
 }

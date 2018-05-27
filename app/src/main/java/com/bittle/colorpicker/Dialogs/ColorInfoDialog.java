@@ -20,7 +20,6 @@ import com.bittle.colorpicker.utils.ImageUtil;
 import com.bittle.colorpicker.utils.StringUtil;
 
 public class ColorInfoDialog extends Activity {
-    ImageUtil imageUtil;
 
     private final float BORDER_WIDTH = 70.0f;
 
@@ -35,7 +34,6 @@ public class ColorInfoDialog extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_color_info_dialog);
 
-        imageUtil = new ImageUtil(this);
         allTextViewsTogether = "";
         mainContext = this;
 
@@ -51,8 +49,8 @@ public class ColorInfoDialog extends Activity {
         ImageView mainColorImageView = findViewById(R.id.mainColorImageView);
 
         final int mainColor = ImagePickerMainActivity.getCurrentColor();
-        Bitmap pic = imageUtil.colorToBitmap_CRISP(mainColor);
-        pic = imageUtil.cropToCircleWithBorder(pic, Color.BLACK, BORDER_WIDTH);
+        Bitmap pic = ImageUtil.getInstance(this).colorToBitmap_CRISP(mainColor);
+        pic = ImageUtil.getInstance(this).cropToCircleWithBorder(pic, Color.BLACK, BORDER_WIDTH);
         mainColorImageView.setImageBitmap(pic);
 
         TextView currentHexTextView = findViewById(R.id.currentHexTextViewDialog);
@@ -102,9 +100,9 @@ public class ColorInfoDialog extends Activity {
         ImageView lighterImageView = findViewById(R.id.lighterImageViewDialog);
 
         final int lighterColor = ColorUtil.getInstance().lightenColor(mainColor, 0.25);
-        Bitmap colorBitmap = imageUtil.colorToBitmap_CRISP(lighterColor);
+        Bitmap colorBitmap = ImageUtil.getInstance(this).colorToBitmap_CRISP(lighterColor);
 
-        colorBitmap = imageUtil.cropToCircleWithBorder(colorBitmap, Color.BLACK, BORDER_WIDTH);
+        colorBitmap = ImageUtil.getInstance(this).cropToCircleWithBorder(colorBitmap, Color.BLACK, BORDER_WIDTH);
         lighterImageView.setImageBitmap(colorBitmap);
 
         TextView lightTextView = findViewById(R.id.lighterTextViewDialog);
@@ -135,9 +133,9 @@ public class ColorInfoDialog extends Activity {
         ImageView darkerImageView = findViewById(R.id.darkerImageViewDialog);
 
         final int darkerColor = ColorUtil.getInstance().darkenColor(mainColor, 0.25);
-        Bitmap colorBitmap = imageUtil.colorToBitmap_CRISP(darkerColor);
+        Bitmap colorBitmap = ImageUtil.getInstance(this).colorToBitmap_CRISP(darkerColor);
 
-        colorBitmap = imageUtil.cropToCircleWithBorder(colorBitmap, Color.BLACK, BORDER_WIDTH);
+        colorBitmap = ImageUtil.getInstance(this).cropToCircleWithBorder(colorBitmap, Color.BLACK, BORDER_WIDTH);
         darkerImageView.setImageBitmap(colorBitmap);
 
         TextView darkTextView = findViewById(R.id.darkerTextViewDialog);
@@ -169,9 +167,9 @@ public class ColorInfoDialog extends Activity {
         ImageView invertedImageView = findViewById(R.id.invertedImageViewDialog);
 
         final int invertedColor = ColorUtil.getInstance().invertColor(mainColor);
-        Bitmap colorBitmap = imageUtil.colorToBitmap_CRISP(invertedColor);
+        Bitmap colorBitmap = ImageUtil.getInstance(this).colorToBitmap_CRISP(invertedColor);
 
-        colorBitmap = imageUtil.cropToCircleWithBorder(colorBitmap, Color.BLACK, BORDER_WIDTH);
+        colorBitmap = ImageUtil.getInstance(this).cropToCircleWithBorder(colorBitmap, Color.BLACK, BORDER_WIDTH);
         invertedImageView.setImageBitmap(colorBitmap);
 
         TextView invertedTextView = findViewById(R.id.invertedTextViewDialog);
@@ -202,8 +200,8 @@ public class ColorInfoDialog extends Activity {
 
         final int domColor = ImagePickerMainActivity.getDominantColor();
 
-        Bitmap colorBitmap = imageUtil.colorToBitmap_CRISP(domColor);
-        colorBitmap = imageUtil.cropToCircleWithBorder(colorBitmap, Color.BLACK, BORDER_WIDTH);
+        Bitmap colorBitmap = ImageUtil.getInstance(this).colorToBitmap_CRISP(domColor);
+        colorBitmap = ImageUtil.getInstance(this).cropToCircleWithBorder(colorBitmap, Color.BLACK, BORDER_WIDTH);
         domView.setImageBitmap(colorBitmap);
 
         TextView textView = findViewById(R.id.dominantTextViewDialog);
@@ -234,8 +232,8 @@ public class ColorInfoDialog extends Activity {
             final ImageView avView = findViewById(R.id.averageImageViewDialog);
             final int aColor = ColorUtil.getInstance().hexToColor(averageColor);
 
-            Bitmap colorBitmap = imageUtil.colorToBitmap_CRISP(aColor);
-            colorBitmap = imageUtil.cropToCircleWithBorder(colorBitmap, Color.BLACK, BORDER_WIDTH);
+            Bitmap colorBitmap = ImageUtil.getInstance(this).colorToBitmap_CRISP(aColor);
+            colorBitmap = ImageUtil.getInstance(this).cropToCircleWithBorder(colorBitmap, Color.BLACK, BORDER_WIDTH);
             avView.setImageBitmap(colorBitmap);
 
             TextView textView = findViewById(R.id.averageTextViewDialog);

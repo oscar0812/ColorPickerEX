@@ -27,15 +27,22 @@ import java.io.File;
  */
 
 public class ImageUtil {
-    private final String TAG_LOG = "fixOutOfMemoryError";
     private Context mainContext;
+    private static ImageUtil instance = null;
+    public static ImageUtil getInstance(Context context){
+        if(instance == null){
+            instance = new ImageUtil(context);
+        }
+        return instance;
+    }
 
     public static final int ROTATE_LEFT_90 = -90;
     public static final int ROTATE_RIGHT_90 = 90;
     public final float MAX_FONT_SIZE = 500.0f;
     public static final boolean CHANGE_BORDER = true;
+    private String TAG_LOG = "IMAGE_UTIL";
 
-    public ImageUtil(Context context) {
+    private ImageUtil(Context context) {
         mainContext = context;
     }
 
@@ -178,8 +185,8 @@ public class ImageUtil {
         return bitmap;
     }
 
-    public Drawable bitmapToDrawable(Bitmap bitmap) {
-        return new BitmapDrawable(mainContext.getResources(), bitmap);
+    public static Drawable bitmapToDrawable(Bitmap bitmap, Context context) {
+        return new BitmapDrawable(context.getResources(), bitmap);
     }
 
     private Bitmap textToBitmap(String text, float textSize, int textColor) {
@@ -234,27 +241,6 @@ public class ImageUtil {
         return null;
     }
 
-    public Bitmap cropToCircle(Bitmap bitmap) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-
-        Canvas canvas = new Canvas(output);
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2, bitmap.getWidth() / 2, paint);
-
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
-
-        return output;
-    }
-
     public Bitmap cropToCircleWithBorder(Bitmap bitmap, int currentColor, float borderWidth,
                                           boolean changeBorder) {
         if(ColorUtil.getInstance().isDarkColor(currentColor) && changeBorder){
@@ -307,7 +293,7 @@ public class ImageUtil {
     }
 
 
-    public Bitmap colorToBitmap(int color, int width, int height) {
+    public static Bitmap colorToBitmap(int color, int width, int height) {
         if (width <= 0) {
             width = 100;
         }
@@ -352,5 +338,10 @@ public class ImageUtil {
         }catch (Exception e){
             Log.e("ERROR", "ImageUtil -> deleteBitmap");
         }
+    }
+
+    public static Drawable colorToDrawable(Context context, int color, int w, int h){
+        Bitmap bitmap = colorToBitmap(color, w, h);
+        return bitmapToDrawable(bitmap, context);
     }
 }

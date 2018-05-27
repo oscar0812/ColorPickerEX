@@ -35,7 +35,6 @@ import java.util.ArrayList;
 
 public class SearchColorActivity extends Activity {
     Activity thisActivity;
-    ImageUtil imageUtil;
 
     private EditText searchBar;
     private ListView lvColorNames;
@@ -50,7 +49,6 @@ public class SearchColorActivity extends Activity {
         setContentView(R.layout.activity_search_color);
 
         thisActivity = this;
-        imageUtil = new ImageUtil(this);
 
         try {
             initialize();
@@ -176,8 +174,8 @@ public class SearchColorActivity extends Activity {
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            Bitmap bit = imageUtil.colorToBitmap(mDisplayedValues.get(position).getColor(), 100, 100);
-            bit = imageUtil.cropToCircleWithBorder(bit, Color.BLACK, 1.0f);
+            Bitmap bit = ImageUtil.getInstance(thisActivity.getApplicationContext()).colorToBitmap(mDisplayedValues.get(position).getColor(), 100, 100);
+            bit = ImageUtil.getInstance(thisActivity.getApplicationContext()).cropToCircleWithBorder(bit, Color.BLACK, 1.0f);
             holder.colorBox.setImageBitmap(bit);
             holder.colorName.setText(mDisplayedValues.get(position).getName());
             String text= "#" + mDisplayedValues.get(position).getHex();
