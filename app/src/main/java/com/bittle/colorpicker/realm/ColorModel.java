@@ -39,12 +39,12 @@ public class ColorModel extends RealmObject {
 
     // methods to display on list
     public int getColor() {
-        return ColorUtil.getInstance().hexToColor(hex);
+        return ColorUtil.hexToColor(hex);
     }
 
     public String getName() {
         if(name == null){
-            String new_name = ColorUtil.getInstance().getClosestColor(this);
+            String new_name = ColorUtil.getClosestColor(this);
             try {
                 name = new_name;
             }catch (Exception e){

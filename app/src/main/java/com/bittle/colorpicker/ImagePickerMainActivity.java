@@ -36,8 +36,6 @@ import java.io.File;
 
 public class ImagePickerMainActivity extends BaseDrawerActivity {
 
-    ScreenUtil screenUtil = new ScreenUtil();
-
     private CustomImageView mainImageView;
 
     private static int currentColor = 0;
@@ -46,7 +44,6 @@ public class ImagePickerMainActivity extends BaseDrawerActivity {
     final int GALLEY_ACTION = 1;
 
     Context context;
-    private int maxTexture;
     private static int mostDomColor;    // dominant color of image
 
     @Override
@@ -59,7 +56,6 @@ public class ImagePickerMainActivity extends BaseDrawerActivity {
         StrictMode.setVmPolicy(builder.build());
 
         context = this;
-        maxTexture = screenUtil.getMaxTexture();
 
         mainImageView = findViewById(R.id.mainImageView);
 
@@ -166,17 +162,18 @@ public class ImagePickerMainActivity extends BaseDrawerActivity {
     }
 
     private void setViewImage(final Uri uri) {
+        final int maxTexture = ScreenUtil.getMaxTexture();
 
         ColorPickerMainActivity.imageUri = uri;
 
-        Bitmap bitmap = ImageUtil.getInstance(context).loadImageFromGallery(uri);
+        Bitmap bitmap = ImageUtil.loadImageFromGallery(context, uri);
 
         if (bitmap != null) {
             try {
-                bitmap = ImageUtil.getInstance(context).makeBitmapFit(bitmap, maxTexture);
+                bitmap = ImageUtil.makeBitmapFit(bitmap, maxTexture);
 
                 if (bitmap.getWidth() > bitmap.getHeight()) {
-                    bitmap = ImageUtil.getInstance(context).rotateImage(bitmap, ImageUtil.ROTATE_RIGHT_90);
+                    bitmap = ImageUtil.rotateImage(bitmap, ImageUtil.ROTATE_RIGHT_90);
                 }
 
                 mainImageView.setImageBitmap(bitmap);
@@ -186,17 +183,17 @@ public class ImagePickerMainActivity extends BaseDrawerActivity {
                 try {
                     String path = StringUtil.getPathFromUri(context, uri);
 
-                    bitmap = ImageUtil.getInstance(context).fixOutOfMemoryError(path);
+                    bitmap = ImageUtil.fixOutOfMemoryError(path);
 
-                    bitmap = ImageUtil.getInstance(context).makeBitmapFit(bitmap, maxTexture);
+                    bitmap = ImageUtil.makeBitmapFit(bitmap, maxTexture);
 
                     if (bitmap.getWidth() > bitmap.getHeight()) {
-                        bitmap = ImageUtil.getInstance(context).rotateImage(bitmap, ImageUtil.ROTATE_RIGHT_90);
+                        bitmap = ImageUtil.rotateImage(bitmap, ImageUtil.ROTATE_RIGHT_90);
                     }
 
                     mainImageView.setImageBitmap(bitmap);
                     setDominantColor();
-                    ImageUtil.getInstance(context).deleteBitmap(path);
+                    ImageUtil.deleteBitmap(path);
 
                 } catch (Exception e) {
                     Log.e("ERROR", e.toString());
@@ -234,7 +231,7 @@ public class ImagePickerMainActivity extends BaseDrawerActivity {
     public void showColorInfoDialog() {
 
         Intent intent = new Intent(ImagePickerMainActivity.this, ColorInfoDialog.class);
-        int hex = ColorUtil.getInstance().getAverageColor(ImageUtil.getInstance(context).drawableToBitmap(
+        int hex = ColorUtil.getAverageColor(ImageUtil.drawableToBitmap(
                 mainImageView.getDrawable()));
         intent.putExtra("average", ColorUtil.colorToHex(hex));
 
@@ -243,8 +240,8 @@ public class ImagePickerMainActivity extends BaseDrawerActivity {
 
     private void setDominantColor() {
         if (mainImageView.getDrawable() != null) {
-            mostDomColor = ColorUtil.getInstance().getDominantColor(
-                    ImageUtil.getInstance(context).drawableToBitmap(mainImageView.getDrawable()));
+            mostDomColor = ColorUtil.getDominantColor(
+                    ImageUtil.drawableToBitmap(mainImageView.getDrawable()));
         }
     }
 
@@ -270,15 +267,15 @@ public class ImagePickerMainActivity extends BaseDrawerActivity {
         optionsButton.setSize(FloatingActionButton.SIZE_MINI);
 
         // ======= catch out of memory errors ======
-        Bitmap bitmap = ImageUtil.getInstance(context).drawableToBitmap
+        Bitmap bitmap = ImageUtil.drawableToBitmap
                 (ContextCompat.getDrawable(this, R.drawable.rotateright));
         try {
-            optionsButton.setIconDrawable(ImageUtil.bitmapToDrawable(bitmap, context));
+            optionsButton.setIconDrawable(ImageUtil.bitmapToDrawable(context, bitmap));
         } catch (java.lang.OutOfMemoryError e1) {
-            String path = ImageUtil.getInstance(context).bitmapToPath(bitmap);
-            bitmap = ImageUtil.getInstance(context).fixOutOfMemoryError(path);
-            optionsButton.setIconDrawable(ImageUtil.bitmapToDrawable(bitmap, context));
-            ImageUtil.getInstance(context).deleteBitmap(path);
+            String path = ImageUtil.bitmapToPath(context, bitmap);
+            bitmap = ImageUtil.fixOutOfMemoryError(path);
+            optionsButton.setIconDrawable(ImageUtil.bitmapToDrawable(context, bitmap));
+            ImageUtil.deleteBitmap(path);
         }
 
 

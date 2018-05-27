@@ -47,8 +47,7 @@ public class ImageOptionsDialog extends Dialog implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rotateLeftImageView:
-                Bitmap b = ImageUtil.getInstance(getContext()).rotateImage(
-                        ImageUtil.getInstance(getContext()).drawableToBitmap(left.getDrawable()),
+                Bitmap b = ImageUtil.rotateImage(ImageUtil.drawableToBitmap(left.getDrawable()),
                         ImageUtil.ROTATE_LEFT_90);
 
                 if(b != null){
@@ -59,8 +58,8 @@ public class ImageOptionsDialog extends Dialog implements View.OnClickListener {
                 break;
 
             case R.id.rotateRightImageView:
-                Bitmap c = ImageUtil.getInstance(getContext()).rotateImage(
-                        ImageUtil.getInstance(getContext()).drawableToBitmap(right.getDrawable()),
+                Bitmap c = ImageUtil.rotateImage(
+                        ImageUtil.drawableToBitmap(right.getDrawable()),
                         ImageUtil.ROTATE_RIGHT_90);
 
                 if(c!=null){

@@ -16,7 +16,11 @@ import android.opengl.GLES20;
 
 public class ScreenUtil {
 
-    public int getMaxTexture() {
+    private ScreenUtil(){
+        // dont instantiate
+    }
+
+    public static int getMaxTexture() {
         EGLDisplay dpy = EGL14.eglGetDisplay(EGL14.EGL_DEFAULT_DISPLAY);
         int[] vers = new int[2];
         EGL14.eglInitialize(dpy, vers, 0, vers, 1);
@@ -64,7 +68,7 @@ public class ScreenUtil {
         return maxSize[0];
     }
 
-    private void setWallpaperImage(final Bitmap bit, Context context) {
+    private static void setWallpaperImage(final Bitmap bit, Context context) {
 
         try {
             WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
@@ -74,9 +78,9 @@ public class ScreenUtil {
         }
     }
 
-    public void setWallpaperImage_FROM_COLOR(int color, Context context){
+    public static void setWallpaperFromColor(int color, Context context){
         int w = 1;
-        Bitmap bitmap = ImageUtil.getInstance(context).colorToBitmap(color, w,w);
+        Bitmap bitmap = ImageUtil.colorToBitmap(color, w,w);
         setWallpaperImage(bitmap, context);
     }
 }

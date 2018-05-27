@@ -24,26 +24,16 @@ import java.io.File;
  */
 
 public class ImageUtil {
-    private Context mainContext;
-    private static ImageUtil instance = null;
-    public static ImageUtil getInstance(Context context){
-        if(instance == null){
-            instance = new ImageUtil(context);
-        }
-        return instance;
-    }
-
     public static final int ROTATE_LEFT_90 = -90;
     public static final int ROTATE_RIGHT_90 = 90;
     public final float MAX_FONT_SIZE = 500.0f;
-    public static final boolean CHANGE_BORDER = true;
-    private String TAG_LOG = "IMAGE_UTIL";
+    private static String TAG_LOG = "IMAGE_UTIL";
 
-    private ImageUtil(Context context) {
-        mainContext = context;
+    private ImageUtil(){
+        // dont instantiate
     }
 
-    private Bitmap makeBitmapFit(Bitmap photo, final int WIDTH, final int HEIGHT) {
+    private static Bitmap makeBitmapFit(Bitmap photo, final int WIDTH, final int HEIGHT) {
         // apps can only support images up to 4096x4096 (depends on device)
         if (photo.getHeight() >= WIDTH || photo.getWidth() >= HEIGHT) {
             Log.i("BITMAP WAS LARGE", "Dimensions: width = " +
@@ -73,11 +63,11 @@ public class ImageUtil {
         }
     }
 
-    public Bitmap makeBitmapFit(Bitmap photo, int wh){
+    public static Bitmap makeBitmapFit(Bitmap photo, int wh){
         return makeBitmapFit(photo, wh, wh);
     }
 
-    public Bitmap fixOutOfMemoryError(String path) {
+    public static Bitmap fixOutOfMemoryError(String path) {
         Bitmap bitmap = null;
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -93,10 +83,10 @@ public class ImageUtil {
         return bitmap;
     }
 
-    public String getImagePath(Context inContext, Bitmap inImage) {
+    public String getImagePath(Context context, Bitmap inImage) {
         ByteArrayOutputStream b = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, b);
-        return MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "Title", null);
     }
 
     // -values is left
@@ -133,7 +123,7 @@ public class ImageUtil {
         }
     }
 
-    private Bitmap loadBitmapFromPath(String path) {
+    private static Bitmap loadBitmapFromPath(String path) {
         try {
             BitmapFactory.Options options = new BitmapFactory.Options();
             return BitmapFactory.decodeFile(path, options);
@@ -142,24 +132,24 @@ public class ImageUtil {
         }
     }
 
-    private Bitmap loadBitmapFromUri(Uri uri) {
-        return loadBitmapFromPath(StringUtil.getPathFromUri(mainContext, uri));
+    private static Bitmap loadBitmapFromUri(Context context, Uri uri) {
+        return loadBitmapFromPath(StringUtil.getPathFromUri(context, uri));
     }
 
-    public Bitmap loadBitmapFromIntent(Intent intent) {
-        return loadBitmapFromUri(intent.getData());
+    public Bitmap loadBitmapFromIntent(Context context, Intent intent) {
+        return loadBitmapFromUri(context, intent.getData());
     }
 
-    public Bitmap loadImageFromGallery(Uri data) {
+    public static Bitmap loadImageFromGallery(Context context, Uri data) {
         try {
-            return loadBitmapFromUri(data);
+            return loadBitmapFromUri(context, data);
         } catch (Exception e) {
             Log.e("ERROR - ", e.toString());
             return null;
         }
     }
 
-    public Bitmap drawableToBitmap(Drawable drawable) {
+    public static Bitmap drawableToBitmap(Drawable drawable) {
         Bitmap bitmap;
 
         if (drawable instanceof BitmapDrawable) {
@@ -182,7 +172,7 @@ public class ImageUtil {
         return bitmap;
     }
 
-    public static Drawable bitmapToDrawable(Bitmap bitmap, Context context) {
+    public static Drawable bitmapToDrawable(Context context, Bitmap bitmap) {
         return new BitmapDrawable(context.getResources(), bitmap);
     }
 
@@ -262,20 +252,20 @@ public class ImageUtil {
         return colorToBitmap(color, 1000, 1000);
     }
 
-    private Uri bitmapToUri(Bitmap b){
+    private static Uri bitmapToUri(Context context, Bitmap b){
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         b.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(mainContext.getContentResolver(), b,
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), b,
                 "tempImage", null);
 
         return Uri.parse(path);
     }
 
-    public String bitmapToPath(Bitmap b){
-        return StringUtil.getPathFromUri(mainContext, bitmapToUri(b));
+    public static String bitmapToPath(Context context, Bitmap b){
+        return StringUtil.getPathFromUri(context, bitmapToUri(context, b));
     }
 
-    public void deleteBitmap(String path){
+    public static void deleteBitmap(String path){
         try{
             File f = new File(path);
             boolean b = f.delete();
@@ -288,6 +278,6 @@ public class ImageUtil {
 
     public static Drawable colorToDrawable(Context context, int color, int w, int h){
         Bitmap bitmap = colorToBitmap(color, w, h);
-        return bitmapToDrawable(bitmap, context);
+        return bitmapToDrawable(context, bitmap);
     }
 }

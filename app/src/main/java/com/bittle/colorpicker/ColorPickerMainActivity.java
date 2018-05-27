@@ -40,7 +40,6 @@ public class ColorPickerMainActivity extends BaseDrawerActivity {
 
     int currentColor = Color.parseColor("#EEEEEE");
     protected static Uri imageUri = null;
-    private ScreenUtil screenUtil = new ScreenUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,7 +194,7 @@ public class ColorPickerMainActivity extends BaseDrawerActivity {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                if (ColorUtil.getInstance().isDarkColor(color)) {
+                if (ColorUtil.isDarkColor(color)) {
 
                     editText.setTextColor(Color.WHITE);
                     hexSign.setTextColor(Color.WHITE);
@@ -251,13 +250,13 @@ public class ColorPickerMainActivity extends BaseDrawerActivity {
 
         closestColorTextView.setTypeface(StringUtil.getFont(this));
 
-        if (ColorUtil.getInstance().isDarkColor(color)) {
+        if (ColorUtil.isDarkColor(color)) {
             closestColorTextView.setTextColor(Color.WHITE);
         } else {
             closestColorTextView.setTextColor(Color.BLACK);
         }
 
-        closestColorTextView.setText(ColorUtil.getInstance().getClosestColor(color));
+        closestColorTextView.setText(ColorUtil.getClosestColor(color));
     }
 
     public void switchActivities(final Intent in) {
@@ -294,7 +293,7 @@ public class ColorPickerMainActivity extends BaseDrawerActivity {
         if (aRequest == SEARCH_COMPLETE) {
             try {
                 String returnValue = aData.getStringExtra("HEX");
-                colorTheLayout(ColorUtil.getInstance().hexToColor(returnValue));
+                colorTheLayout(ColorUtil.hexToColor(returnValue));
             } catch (Exception ignored) {
             }
         }
@@ -396,7 +395,7 @@ public class ColorPickerMainActivity extends BaseDrawerActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                screenUtil.setWallpaperImage_FROM_COLOR(color, context);
+                ScreenUtil.setWallpaperFromColor(color, context);
                 Toaster.toast("Wallpaper set", context);
             }
         });

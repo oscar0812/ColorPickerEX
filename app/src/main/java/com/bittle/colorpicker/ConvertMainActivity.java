@@ -40,7 +40,7 @@ public class ConvertMainActivity extends AppCompatActivity {
 
         TextView closeTheDialog = findViewById(R.id.closeTextViewConvert);
         closeTheDialog.setTypeface(StringUtil.getFont(this));
-        //closeTheDialog.setTextColor(ColorUtil.getInstance().hexToColor(hex));
+        //closeTheDialog.setTextColor(ColorUtil.hexToColor(hex));
         closeTheDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,7 +63,7 @@ public class ConvertMainActivity extends AppCompatActivity {
 
         TextView copyAll = findViewById(R.id.copyAllTextViewConvert);
         copyAll.setTypeface(StringUtil.getFont(this));
-        //copyAll.setTextColor(ColorUtil.getInstance().hexToColor(hex));
+        //copyAll.setTextColor(ColorUtil.hexToColor(hex));
         copyAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,10 +115,10 @@ public class ConvertMainActivity extends AppCompatActivity {
         }
 
         setHex(hex, mainTexts[0]);
-        setInt(ColorUtil.getInstance().hexToColor(hex), mainTexts[1]);
-        setRgb(ColorUtil.getInstance().hexToRGB(hex), mainTexts[2]);
-        setSmali(ColorUtil.getInstance().hexToSmaliCode(hex), mainTexts[3]);
-        setOrigin(ColorUtil.getInstance().getClosestColor(ColorUtil.getInstance().hexToColor(hex)), mainTexts[4]);
+        setInt(ColorUtil.hexToColor(hex), mainTexts[1]);
+        setRgb(ColorUtil.hexToRGB(hex), mainTexts[2]);
+        setSmali(ColorUtil.hexToSmaliCode(hex), mainTexts[3]);
+        setOrigin(ColorUtil.getClosestColor(ColorUtil.hexToColor(hex)), mainTexts[4]);
     }
 
     private void setHex(String hex, TextView editText) {
@@ -159,7 +159,7 @@ public class ConvertMainActivity extends AppCompatActivity {
     @Override
     public boolean isFinishing() {
         if (ColorInfoDialog.isActive) {
-            switchActivities(ColorUtil.getInstance().hexToColor(hex));
+            switchActivities(ColorUtil.hexToColor(hex));
         }
         return super.isFinishing();
     }
@@ -167,7 +167,7 @@ public class ConvertMainActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         if (ColorInfoDialog.isActive) {
-            switchActivities(ColorUtil.getInstance().hexToColor(hex));
+            switchActivities(ColorUtil.hexToColor(hex));
         }
         super.onDestroy();
     }

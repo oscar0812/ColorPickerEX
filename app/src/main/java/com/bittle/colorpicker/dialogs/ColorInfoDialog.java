@@ -85,19 +85,19 @@ public class ColorInfoDialog extends Activity {
 
     private void setTheOptions(int mainColor) {
         // setLighter
-        int color = ColorUtil.getInstance().lightenColor(mainColor, 0.25);
+        int color = ColorUtil.lightenColor(mainColor, 0.25);
         setOption(R.id.lighterImageViewDialog, R.id.lighterTextViewDialog ,color);
         // setDarker
-        color = ColorUtil.getInstance().darkenColor(mainColor, 0.25);
+        color = ColorUtil.darkenColor(mainColor, 0.25);
         setOption(R.id.darkerImageViewDialog, R.id.darkerTextViewDialog, color);
         // setInverted
-        color = ColorUtil.getInstance().invertColor(mainColor);
+        color = ColorUtil.invertColor(mainColor);
         setOption(R.id.invertedImageViewDialog, R.id.invertedTextViewDialog, color);
         // setDominant
         color = ImagePickerMainActivity.getDominantColor();
         setOption(R.id.dominantImageViewDialog, R.id.dominantTextViewDialog, color);
         // setAverage
-        color = ColorUtil.getInstance().hexToColor(averageColor);
+        color = ColorUtil.hexToColor(averageColor);
         setOption(R.id.averageImageViewDialog, R.id.averageTextViewDialog, color);
     }
 

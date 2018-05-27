@@ -55,7 +55,7 @@ public class SearchColorActivity extends Activity {
         }catch (Exception e){
             finish();
         }
-        mColorNameArrayList = ColorUtil.getInstance().getColorList();
+        mColorNameArrayList = ColorUtil.getColorList();
 
         //sortByColor();
 

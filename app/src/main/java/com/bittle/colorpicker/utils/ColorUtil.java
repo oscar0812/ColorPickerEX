@@ -17,21 +17,12 @@ import java.util.List;
  */
 
 public class ColorUtil {
-    private static ColorUtil instance = null;
 
-    public static ColorUtil getInstance() {
-        if (instance == null) {
-            instance = new ColorUtil();
-        }
-        return instance;
+    private ColorUtil(){
+        // dont instantiate
     }
 
-    private ArrayList<ColorModel> colorList = new ArrayList<>();
-
-    private ColorUtil() {
-        // initialize the list when ColorUtil is instantiated
-        initColorList();
-    }
+    private static ArrayList<ColorModel> colorList = new ArrayList<>();
 
     public static String colorToHex(int color) {
         try {
@@ -55,11 +46,11 @@ public class ColorUtil {
         return colorToHex(Color.rgb(r, g, b));
     }
 
-    private boolean isSmali(String s) {
+    private static boolean isSmali(String s) {
         return s.startsWith("-0x");
     }
 
-    public int hexToColor(String hex) {
+    public static int hexToColor(String hex) {
         if (isSmali(hex)) {
             hex = smaliCodeToHex(hex);
         }
@@ -78,13 +69,13 @@ public class ColorUtil {
         }
     }
 
-    public boolean isDarkColor(int color) {
+    public static boolean isDarkColor(int color) {
         double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114
                 * Color.blue(color)) / 255;
         return darkness >= 0.5;
     }
 
-    public int lightenColor(int color, double fraction) {
+    public static int lightenColor(int color, double fraction) {
         int red = Color.red(color);
         int green = Color.green(color);
         int blue = Color.blue(color);
@@ -96,7 +87,7 @@ public class ColorUtil {
         return Color.argb(alpha, red, green, blue);
     }
 
-    public int darkenColor(int color, double fraction) {
+    public static int darkenColor(int color, double fraction) {
         int red = Color.red(color);
         int green = Color.green(color);
         int blue = Color.blue(color);
@@ -108,15 +99,15 @@ public class ColorUtil {
         return Color.argb(alpha, red, green, blue);
     }
 
-    private int darken(int color, double fraction) {
+    private static int darken(int color, double fraction) {
         return (int) Math.max(color - (color * fraction), 0);
     }
 
-    private int lighten(int color, double fraction) {
+    private static int lighten(int color, double fraction) {
         return (int) Math.min(color + (color * fraction), 255);
     }
 
-    public boolean validHex(String hex) {
+    public static boolean validHex(String hex) {
         boolean flag = true;
         if (hex.startsWith("#")) {
             return true;
@@ -132,11 +123,11 @@ public class ColorUtil {
         return flag;
     }
 
-    public int invertColor(int color) {
+    public static int invertColor(int color) {
         return (0xFFFFFF - color) | 0xFF000000;
     }
 
-    public int getDominantColor(Bitmap bitmap) {
+    public static int getDominantColor(Bitmap bitmap) {
         List<Palette.Swatch> swatchesTemp = Palette.from(bitmap).generate().getSwatches();
         List<Palette.Swatch> swatches = new ArrayList<>(swatchesTemp);
 
@@ -149,24 +140,24 @@ public class ColorUtil {
         return swatches.size() > 0 ? swatches.get(0).getRgb() : Color.BLACK;
     }
 
-    public int getAverageColor(Bitmap bitmap) {
+    public static int getAverageColor(Bitmap bitmap) {
         Bitmap b = Bitmap.createScaledBitmap(bitmap, 1, 1, true);
         final int color = b.getPixel(0, 0);
         b.recycle();
         return color;
     }
 
-    private double[] colorToLAB(int color) {
+    private static double[] colorToLAB(int color) {
         double[] f = new double[3];
         android.support.v4.graphics.ColorUtils.colorToLAB(color, f);
         return f;
     }
 
-    private double[] hexToLAB(String hex) {
+    private static double[] hexToLAB(String hex) {
         return colorToLAB(hexToColor(hex));
     }
 
-    public String hexToSmaliCode(String hex) {
+    public static String hexToSmaliCode(String hex) {
         if (hex.length() >= 6) {
             hex = hex.toUpperCase();
             hex = hex.replaceAll("0", "f").replaceAll("1", "e").replaceAll("2", "d")
@@ -182,7 +173,7 @@ public class ColorUtil {
         }
     }
 
-    public String smaliCodeToHex(String smali) {
+    public static String smaliCodeToHex(String smali) {
         smali = smali.replace("-0x", "");
         if (smali.length() >= 6) {
             smali = smali.toLowerCase();
@@ -199,7 +190,7 @@ public class ColorUtil {
         }
     }
 
-    private int[] colorToRGB(int color) {
+    private static int[] colorToRGB(int color) {
 
         return new int[]{
                 Color.red(color),
@@ -208,15 +199,15 @@ public class ColorUtil {
         };
     }
 
-    public int[] hexToRGB(String hex) {
+    public static int[] hexToRGB(String hex) {
         return colorToRGB(hexToColor(hex));
     }
 
-    public String getClosestColor(int color){
+    public static String getClosestColor(int color) {
         return getClosestColor(new ColorModel(colorToHex(color)));
     }
 
-    public String getClosestColor(ColorModel current) {
+    public static String getClosestColor(ColorModel current) {
         ColorModel closestMatch = null;
         double minMSE = Integer.MAX_VALUE;
         for (ColorModel c : colorList) {
@@ -234,7 +225,7 @@ public class ColorUtil {
         }
     }
 
-    private double computeClosestColor_CIEDE2000(ColorModel current, ColorModel incoming) {
+    private static double computeClosestColor_CIEDE2000(ColorModel current, ColorModel incoming) {
         double[] f1 = hexToLAB(current.getHex());
         double[] f2 = hexToLAB(incoming.getHex());
 
@@ -296,8 +287,7 @@ public class ColorUtil {
         );
     }
 
-
-    private void initColorList() {
+    private static void initColorList() {
         colorList.add(new ColorModel("AliceBlue", 0xF0, 0xF8, 0xFF));
         colorList.add(new ColorModel("AntiqueWhite", 0xFA, 0xEB, 0xD7));
         colorList.add(new ColorModel("Aqua", 0x00, 0xFF, 0xFF));
@@ -440,7 +430,9 @@ public class ColorUtil {
         colorList.add(new ColorModel("YellowGreen", 0x9A, 0xCD, 0x32));
     }
 
-    public ArrayList<ColorModel> getColorList() {
+    public static ArrayList<ColorModel> getColorList() {
+        if (colorList.isEmpty())
+            initColorList();
         return colorList;
     }
 }
