@@ -12,8 +12,7 @@
     <string name="title_activity_color_info">ColorInfo</string>
     <string name="clear">CLEAR</string>
     <string name="title_activity_navigation">NavigationActivity</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">Color Picker Ex</string>
     <string name="nav_header_desc">Navigation header</string>
 
     <string name="nav_drawer_opened">drawer opened</string>
