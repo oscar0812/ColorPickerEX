@@ -14,6 +14,7 @@ import android.text.method.TextKeyListener;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -33,7 +34,7 @@ import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
-public class ColorPickerMainActivity extends BaseDrawerActivity {
+public class ColorPickerMainActivity extends BaseDrawerActivity implements View.OnTouchListener{
     private RelativeLayout mainAppLayout;
     private EditText mainEditText;
     public static final int SEARCH_COMPLETE = 0;
@@ -46,10 +47,10 @@ public class ColorPickerMainActivity extends BaseDrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_color_picker_main);
         FABFunctions();
-
         final EditText mainTextBox = findViewById(R.id.hexTextBoxConvert);
         final TextView hexSignTextView = findViewById(R.id.hexSignTextView);
         final RelativeLayout mainLayout = findViewById(R.id.mainRelativeLayout);
+        mainLayout.setOnTouchListener(this);
 
         mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +65,7 @@ public class ColorPickerMainActivity extends BaseDrawerActivity {
                 }
             }
         });
+
         mainLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -401,5 +403,20 @@ public class ColorPickerMainActivity extends BaseDrawerActivity {
         });
         builder.show();
     }
+// here is that listener u fag
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+       switch (motionEvent.getAction()){
+           case MotionEvent.ACTION_DOWN:
+               break;
+           case MotionEvent.ACTION_UP:
+               break;
+           case MotionEvent.ACTION_MOVE:
+               break;
 
+       }
+
+
+        return true;
+    }
 }
