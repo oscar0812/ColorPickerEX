@@ -117,7 +117,7 @@ public class ConvertMainActivity extends AppCompatActivity {
         setHex(hex, mainTexts[0]);
         setInt(ColorUtil.hexToColor(hex), mainTexts[1]);
         setRgb(ColorUtil.hexToRGB(hex), mainTexts[2]);
-        setSmali(ColorUtil.hexToSmaliCode(hex), mainTexts[3]);
+        setSmali(ColorUtil.hexToSmaliCode(hex)[0], mainTexts[3]);
         setOrigin(ColorUtil.getClosestColor(ColorUtil.hexToColor(hex)), mainTexts[4]);
     }
 
@@ -139,9 +139,6 @@ public class ConvertMainActivity extends AppCompatActivity {
     }
 
     private void setSmali(String smaliCode, TextView editText) {
-        if (!smaliCode.startsWith("-")) {
-            smaliCode = "-0x" + smaliCode;
-        }
         editText.setText(smaliCode);
     }
 

@@ -79,36 +79,30 @@ public class ColorUtil {
         if(fraction > 1)
             fraction = 1;
         
-        int red = Color.red(color);
-        int green = Color.green(color);
-        int blue = Color.blue(color);
+        int red = lighten(Color.red(color), fraction);
+        int green = lighten(Color.green(color), fraction);
+        int blue = lighten(Color.blue(color), fraction);
 
-        red = (int) ((red * (1 - fraction) / 255 + fraction) * 255);
-        green = (int) ((green * (1 - fraction) / 255 + fraction) * 255);
-        blue = (int) ((blue * (1 - fraction) / 255 + fraction) * 255);
         return Color.rgb(red, green, blue);
+    }
+
+    private static int lighten(int color, double fraction) {
+        return (int) ((color * (1 - fraction) / 255 + fraction) * 255);
     }
 
     public static int darkenColor(int color, double fraction) {
         if(fraction > 1)
             fraction = 1;
 
-        int red = Color.red(color);
-        int green = Color.green(color);
-        int blue = Color.blue(color);
+        int red = darken(Color.red(color), fraction);
+        int green = darken(Color.green(color), fraction);
+        int blue = darken(Color.blue(color), fraction);
 
-        red = (int) ((red * (1 - fraction) / 255) * 255);
-        green = (int) ((green * (1 - fraction) / 255) * 255);
-        blue = (int) ((blue * (1 - fraction) / 255) * 255);
         return Color.rgb(red, green, blue);
     }
 
     private static int darken(int color, double fraction) {
-        return (int) Math.max(color - (color * fraction), 0);
-    }
-
-    private static int lighten(int color, double fraction) {
-        return (int) Math.min(color + (color * fraction), 255);
+        return (int) ((color * (1 - fraction) / 255) * 255);
     }
 
     public static boolean validHex(String hex) {
@@ -161,20 +155,30 @@ public class ColorUtil {
         return colorToLAB(hexToColor(hex));
     }
 
-    public static String hexToSmaliCode(String hex) {
+    /*
+     If the value is positive, then there's no need to do anything.
+     If the value is negative, simply add 0x100000000 to the
+     value. e.g. -0x20ce6d48 + 0x100000000 = 0xdf3192b8, so a value
+     of -0x20ce6d48 corresponds to a hex color code of #df3192b8.
+     */
+    public static String[] hexToSmaliCode(String hex) {
+        String[] smali = new String[2];
         if (hex.length() >= 6) {
-            hex = hex.toUpperCase();
-            hex = hex.replaceAll("0", "f").replaceAll("1", "e").replaceAll("2", "d")
-                    .replaceAll("3", "c").replaceAll("4", "b").replaceAll("5", "a")
-                    .replaceAll("6", "9").replaceAll("7", "8").replaceAll("8", "7")
-                    .replaceAll("9", "6").replaceAll("A", "5").replaceAll("B", "4")
-                    .replaceAll("C", "3").replaceAll("D", "2").replaceAll("E", "1")
-                    .replaceAll("F", "0");
-            return hex;
+            // good length
+            smali[0] = "0x"+hex.toLowerCase();
+            /*
+            try{
+                long n = Long.parseLong(hex, 16);
+                long s = 4_294_967_296;
+                smali[1] = Long.toHexString(n-s);
+            } catch (Exception e){
+                Log.e("ERROR", "hexToSmali, corrupt hex 1");
+            }
+            */
         } else {
-            Log.e("ERROR", "hexToSmali, corrupt hex");
-            return "";
+            Log.e("ERROR", "hexToSmali, corrupt hex 2");
         }
+        return smali;
     }
 
     public static String smaliCodeToHex(String smali) {
