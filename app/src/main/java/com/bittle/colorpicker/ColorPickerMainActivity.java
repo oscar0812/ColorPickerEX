@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.TextKeyListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,13 +35,16 @@ import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
-public class ColorPickerMainActivity extends BaseDrawerActivity implements View.OnTouchListener{
+public class ColorPickerMainActivity extends BaseDrawerActivity implements View.OnTouchListener {
     private RelativeLayout mainAppLayout;
     private EditText mainEditText;
     public static final int SEARCH_COMPLETE = 0;
 
     int currentColor = Color.parseColor("#EEEEEE");
     protected static Uri imageUri = null;
+
+    // for the touch listener
+    private boolean is_being_touched = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +108,7 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
                         int color = Color.parseColor("#" + str);
                         currentColor = color;
                         mainLayout.setBackgroundColor(color);
-
+                        if(!is_being_touched)
                         DBRealm.getInstance(context).insert(ColorUtil.colorToHex(color));
                         setClosestColor(color);
 
@@ -130,7 +134,6 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
             }
         }
     }
-
 
     private void changeTextInsideListener(EditText view, TextWatcher watcher, String str) {
         view.removeTextChangedListener(watcher);
@@ -230,13 +233,17 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
         return s.toString();
     }
 
+
     public void colorTheLayout(int color) {
         mainAppLayout.setBackgroundColor(color);
         mainEditText.setText(ColorUtil.colorToHex(color));
         setClosestColor(color);
 
-        //  write color to db
-        DBRealm.getInstance(context).insert(ColorUtil.colorToHex(color));
+        if(!is_being_touched) {
+            //  write color to db
+            DBRealm.getInstance(context).insert(ColorUtil.colorToHex(color));
+        }
+
     }
 
     public void setClosestColor(int color) {
@@ -403,20 +410,39 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
         });
         builder.show();
     }
-// here is that listener u fag
+
+    float start_y = 0;
+    int start_color = 0;
+
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-       switch (motionEvent.getAction()){
-           case MotionEvent.ACTION_DOWN:
-               break;
-           case MotionEvent.ACTION_UP:
-               break;
-           case MotionEvent.ACTION_MOVE:
-               break;
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                // record the Y coordinate when view is clicked
+                start_y = motionEvent.getY();
+                start_color = currentColor;
+                is_being_touched = true;
+                break;
+            case MotionEvent.ACTION_UP:
+                is_being_touched = false;
+                colorTheLayout(currentColor);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                float diff = start_y - motionEvent.getY();
 
-       }
+                // diff increases as u go up, and decreases as u go down (goes into negatives)
+                float percentage = diff / 1000;
+                Log.e("MOVING", percentage + "");
 
+                if (percentage > 0) {
+                    currentColor = ColorUtil.lightenColor(start_color, percentage);
+                } else {
+                    currentColor = ColorUtil.darkenColor(start_color, Math.abs(percentage));
+                }
+                colorTheLayout(currentColor);
+                break;
 
+        }
         return true;
     }
 }

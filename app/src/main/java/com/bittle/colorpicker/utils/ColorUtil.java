@@ -76,27 +76,31 @@ public class ColorUtil {
     }
 
     public static int lightenColor(int color, double fraction) {
+        if(fraction > 1)
+            fraction = 1;
+        
         int red = Color.red(color);
         int green = Color.green(color);
         int blue = Color.blue(color);
 
-        red = lighten(red, fraction);
-        green = lighten(green, fraction);
-        blue = lighten(blue, fraction);
-        int alpha = Color.alpha(color);
-        return Color.argb(alpha, red, green, blue);
+        red = (int) ((red * (1 - fraction) / 255 + fraction) * 255);
+        green = (int) ((green * (1 - fraction) / 255 + fraction) * 255);
+        blue = (int) ((blue * (1 - fraction) / 255 + fraction) * 255);
+        return Color.rgb(red, green, blue);
     }
 
     public static int darkenColor(int color, double fraction) {
+        if(fraction > 1)
+            fraction = 1;
+
         int red = Color.red(color);
         int green = Color.green(color);
         int blue = Color.blue(color);
 
-        red = darken(red, fraction);
-        green = darken(green, fraction);
-        blue = darken(blue, fraction);
-        int alpha = Color.alpha(color);
-        return Color.argb(alpha, red, green, blue);
+        red = (int) ((red * (1 - fraction) / 255) * 255);
+        green = (int) ((green * (1 - fraction) / 255) * 255);
+        blue = (int) ((blue * (1 - fraction) / 255) * 255);
+        return Color.rgb(red, green, blue);
     }
 
     private static int darken(int color, double fraction) {
