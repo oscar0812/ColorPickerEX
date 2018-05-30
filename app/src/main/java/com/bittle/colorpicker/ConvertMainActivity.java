@@ -117,7 +117,7 @@ public class ConvertMainActivity extends AppCompatActivity {
         setHex(hex, mainTexts[0]);
         setInt(ColorUtil.hexToColor(hex), mainTexts[1]);
         setRgb(ColorUtil.hexToRGB(hex), mainTexts[2]);
-        setSmali(ColorUtil.hexToSmaliCode(hex)[0], mainTexts[3]);
+        setSmali(ColorUtil.hexToSmaliCode(hex)[1], mainTexts[3]);
         setOrigin(ColorUtil.getClosestColor(ColorUtil.hexToColor(hex)), mainTexts[4]);
     }
 

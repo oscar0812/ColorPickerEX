@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.bittle.colorpicker.realm.ColorModel;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class ColorUtil {
 
-    private ColorUtil(){
+    private ColorUtil() {
         // dont instantiate
     }
 
@@ -47,12 +48,12 @@ public class ColorUtil {
     }
 
     private static boolean isSmali(String s) {
-        return s.startsWith("-0x");
+        return s.contains("0x");
     }
 
     public static int hexToColor(String hex) {
         if (isSmali(hex)) {
-            hex = smaliCodeToHex(hex);
+            hex = smaliToHex(hex);
         }
         if (!hex.contains("#")) {
             hex = "#" + hex;
@@ -76,9 +77,9 @@ public class ColorUtil {
     }
 
     public static int lightenColor(int color, double fraction) {
-        if(fraction > 1)
+        if (fraction > 1)
             fraction = 1;
-        
+
         int red = lighten(Color.red(color), fraction);
         int green = lighten(Color.green(color), fraction);
         int blue = lighten(Color.blue(color), fraction);
@@ -91,7 +92,7 @@ public class ColorUtil {
     }
 
     public static int darkenColor(int color, double fraction) {
-        if(fraction > 1)
+        if (fraction > 1)
             fraction = 1;
 
         int red = darken(Color.red(color), fraction);
@@ -157,43 +158,56 @@ public class ColorUtil {
 
     /*
      If the value is positive, then there's no need to do anything.
-     If the value is negative, simply add 0x100000000 to the
-     value. e.g. -0x20ce6d48 + 0x100000000 = 0xdf3192b8, so a value
-     of -0x20ce6d48 corresponds to a hex color code of #df3192b8.
+     If the value is negative, simply add 0x1000000 to the
+     value. e.g. -0x111112 + 0x1000000 = 0xeeeeee, so a value
+     of -0x111112 corresponds to a hex color code of #eeeeee.
      */
     public static String[] hexToSmaliCode(String hex) {
+        if (hex.startsWith("#")) {
+            // remove leading #
+            hex = hex.substring(1);
+        }
         String[] smali = new String[2];
         if (hex.length() >= 6) {
             // good length
-            smali[0] = "0x"+hex.toLowerCase();
-            /*
-            try{
-                long n = Long.parseLong(hex, 16);
-                long s = 4_294_967_296;
-                smali[1] = Long.toHexString(n-s);
-            } catch (Exception e){
-                Log.e("ERROR", "hexToSmali, corrupt hex 1");
+            smali[0] = "0x" + hex.toLowerCase();
+
+            try {
+                BigInteger h = new BigInteger(hex, 16);
+                BigInteger shift = new BigInteger("1000000", 16);
+
+                String product = h.subtract(shift).toString(16);
+                // product => -111112, need -0x111112
+                smali[1] = "-0x" + product.substring(1);
+                Log.e("CONVERTED BACK", smaliToHex(smali[1]));
+            } catch (Exception e) {
+                Log.e("ERROR", "hexToSmali -> corrupt hex");
             }
-            */
+
         } else {
-            Log.e("ERROR", "hexToSmali, corrupt hex 2");
+            Log.e("ERROR", "hexToSmali => corrupt hex");
         }
         return smali;
     }
 
-    public static String smaliCodeToHex(String smali) {
-        smali = smali.replace("-0x", "");
-        if (smali.length() >= 6) {
-            smali = smali.toLowerCase();
-            smali = smali.replaceAll("f", "0").replaceAll("e", "1").replaceAll("d", "2")
-                    .replaceAll("c", "3").replaceAll("b", "4").replaceAll("a", "5")
-                    .replaceAll("9", "6").replaceAll("8", "7").replaceAll("7", "8")
-                    .replaceAll("6", "9").replaceAll("5", "A").replaceAll("4", "B")
-                    .replaceAll("3", "C").replaceAll("2", "D").replaceAll("1", "E")
-                    .replaceAll("0", "F");
-            return smali.trim();
-        } else {
-            Log.e("ERROR", "smaliToHex, corrupt smali");
+    public static String smaliToHex(String smali) {
+        if (smali.contains("0x")) {
+            // remove 0x
+            smali = smali.replace("0x", "");
+        }
+
+        try {
+            if (smali.startsWith("-")) {
+                // negative smali (add 0x1000000)
+                BigInteger h = new BigInteger(smali, 16);
+                BigInteger shift = new BigInteger("1000000", 16);
+
+                return h.add(shift).toString(16);
+            }
+            // positive (smali = hex)
+            return smali;
+        } catch (Exception e) {
+            Log.e("ERROR", "smaliToHex");
             return "";
         }
     }

@@ -167,7 +167,7 @@ public class StringUtil {
     public static void copyToClipboard(String text, Context c) {
         if (text.length() >= 6) {
             if(ColorUtil.validHex(text) ||
-                    ColorUtil.validHex(ColorUtil.smaliCodeToHex(text))) {
+                    ColorUtil.validHex(ColorUtil.smaliToHex(text))) {
                 // write color to db
                 DBRealm.getInstance(c).insert(text);
             }
