@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bittle.colorpicker.realm.DBRealm;
@@ -160,29 +159,20 @@ public class StringUtil {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
 
-    public static Typeface getFont(Context c){
+    public static Typeface getFont(Context c) {
         return Typeface.createFromAsset(c.getAssets(), "fonts/textmeone.ttf");
     }
 
     public static void copyToClipboard(String text, Context c) {
-        if (text.length() >= 6) {
-            if(ColorUtil.validHex(text) ||
-                    ColorUtil.validHex(ColorUtil.smaliToHex(text))) {
-                // write color to db
-                DBRealm.getInstance(c).insert(text);
-            }
-            ClipboardManager clipboard = (ClipboardManager) c.getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText("text", text);
-            assert clipboard != null;
-            clipboard.setPrimaryClip(clip);
-            Toast.makeText(c, "Copied To Clipboard", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(c, "Invalid Hex Code", Toast.LENGTH_LONG).show();
+        if (ColorUtil.isValidHex(text) ||
+                ColorUtil.isValidHex(ColorUtil.smaliToHex(text))) {
+            // write color to db
+            DBRealm.getInstance(c).insert(text);
         }
-    }
-
-    public static void copyToClipboard(TextView view, Context c) {
-        if (view.getText().length() >= 6)
-            copyToClipboard(view.getText().toString(), c);
+        ClipboardManager clipboard = (ClipboardManager) c.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("text", text);
+        assert clipboard != null;
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(c, "Copied To Clipboard", Toast.LENGTH_LONG).show();
     }
 }

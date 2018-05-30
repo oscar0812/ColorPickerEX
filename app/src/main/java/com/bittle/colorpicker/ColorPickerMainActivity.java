@@ -100,7 +100,7 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
                         changeTextInsideListener(mainTextBox, this, str);
                     }
 
-                    if (mainTextBox.getText().toString().length() >= 6) {
+                    if (ColorUtil.isValidHex(mainTextBox.getText().toString())) {
                         changeTextInsideListener(mainTextBox, this,
                                 (mainTextBox.getText().toString()).toUpperCase());
 

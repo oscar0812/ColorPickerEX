@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Created by Bittle on 12/31/16.
@@ -55,18 +56,13 @@ public class ColorUtil {
         if (isSmali(hex)) {
             hex = smaliToHex(hex);
         }
-        if (!hex.contains("#")) {
+        if (!hex.startsWith("#")) {
             hex = "#" + hex;
         }
-        if (hex.length() >= 6) {
+        if (isValidHex(hex)) {
             return Color.parseColor(hex);
         } else {
-            Log.e("ERROR", "hexToColor, corrupt hex");
-            try {
-                return Color.parseColor(hex);
-            } catch (Exception ig) {
-                return Color.BLACK;
-            }
+            return Color.BLACK;
         }
     }
 
@@ -106,20 +102,8 @@ public class ColorUtil {
         return (int) ((color * (1 - fraction) / 255) * 255);
     }
 
-    public static boolean validHex(String hex) {
-        boolean flag = true;
-        if (hex.startsWith("#")) {
-            return true;
-        } else {
-            for (int x = 0; x < 6; x++) {
-                char c = hex.toLowerCase().charAt(x);
-
-                if (!((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f'))) {
-                    flag = false;
-                }
-            }
-        }
-        return flag;
+    public static boolean isValidHex(String hex) {
+        return Pattern.compile("([A-Fa-f0-9]{6})$").matcher(hex).matches();
     }
 
     public static int invertColor(int color) {
@@ -168,8 +152,8 @@ public class ColorUtil {
             hex = hex.substring(1);
         }
         String[] smali = new String[2];
-        if (hex.length() >= 6) {
-            // good length
+
+        if (isValidHex(hex)) {
             smali[0] = "0x" + hex.toLowerCase();
 
             try {
@@ -179,7 +163,6 @@ public class ColorUtil {
                 String product = h.subtract(shift).toString(16);
                 // product => -111112, need -0x111112
                 smali[1] = "-0x" + product.substring(1);
-                Log.e("CONVERTED BACK", smaliToHex(smali[1]));
             } catch (Exception e) {
                 Log.e("ERROR", "hexToSmali -> corrupt hex");
             }
