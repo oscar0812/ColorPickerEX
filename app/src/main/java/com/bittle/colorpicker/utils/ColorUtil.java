@@ -103,7 +103,8 @@ public class ColorUtil {
     }
 
     public static boolean isValidHex(String hex) {
-        return Pattern.compile("([A-Fa-f0-9]{6})$").matcher(hex).matches();
+        if (!hex.startsWith("#")) hex = "#" + hex;
+        return Pattern.compile("^#([A-Fa-f0-9]{6})$").matcher(hex).matches();
     }
 
     public static int invertColor(int color) {
