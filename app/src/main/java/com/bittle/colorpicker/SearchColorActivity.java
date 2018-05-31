@@ -12,12 +12,10 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.Filter;
@@ -30,6 +28,7 @@ import android.widget.Toast;
 
 import com.bittle.colorpicker.realm.ColorModel;
 import com.bittle.colorpicker.utils.ColorUtil;
+import com.bittle.colorpicker.utils.ScreenUtil;
 
 import java.util.ArrayList;
 
@@ -86,22 +85,16 @@ public class SearchColorActivity extends Activity {
         normalizeHeight();
     }
 
-    private void normalizeHeight(){
+    private void normalizeHeight() {
         // for rounded edges
         this.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-
         // set the max height
-        WindowManager wm = (WindowManager) this.getSystemService(WINDOW_SERVICE);
-
-        DisplayMetrics metrics = new DisplayMetrics();
-        assert wm != null;
-        wm.getDefaultDisplay().getMetrics(metrics);
-
-        final int HEIGHT_WANTED = 1480;
+        int screen = ScreenUtil.getScreenHeight();
+        final int HEIGHT_WANTED = screen - (screen / 4);
         // height of device
         //Log.d("check", metrics.heightPixels + "");
-        if (metrics.heightPixels < HEIGHT_WANTED) {
+        if (screen < HEIGHT_WANTED) {
             this.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
         } else {
@@ -121,7 +114,6 @@ public class SearchColorActivity extends Activity {
         searchBar.setText("");
         searchBar.append(str);
     }
-
 
     // Adapter Class            
     public class MyAdapter extends BaseAdapter implements Filterable {

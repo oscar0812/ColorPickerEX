@@ -2,6 +2,7 @@ package com.bittle.colorpicker.utils;
 
 import android.app.WallpaperManager;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.opengl.EGL14;
 import android.opengl.EGLConfig;
@@ -83,5 +84,9 @@ public class ScreenUtil {
         int w = 1;
         Bitmap bitmap = ImageUtil.colorToBitmap(color, w,w);
         setWallpaperImage(bitmap, context);
+    }
+
+    public static int getScreenHeight(){
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 }
