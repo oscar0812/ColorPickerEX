@@ -10,6 +10,15 @@ import java.util.regex.Pattern;
  * Scribbled by oscartorres on 5/30/18.
  */
 public class RegexInputFilter implements InputFilter {
+
+    public static final InputFilter[] HexInputFilter = new InputFilter[] {
+            // Only accept Hexidecimal values with a max length of 6,
+            // it will also capitalize all input
+            new RegexInputFilter("[A-Fa-f0-9]*"),
+            new InputFilter.LengthFilter(6),
+            new InputFilter.AllCaps()
+    };
+
     private Pattern pattern;
 
     RegexInputFilter(String inputPattern) {
@@ -28,12 +37,5 @@ public class RegexInputFilter implements InputFilter {
         Matcher matcher = this.pattern.matcher(charSequence);
         if (!matcher.matches()) return "";
         return null;
-    }
-
-    public static class HexInputFilter extends RegexInputFilter{
-        public HexInputFilter() {
-            // empty is also considered valid hex
-            super("[A-Fa-f0-9]*");
-        }
     }
 }

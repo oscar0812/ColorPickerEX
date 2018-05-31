@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
-import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
@@ -23,7 +22,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bittle.colorpicker.dialogs.ColorInfoDialog;
 import com.bittle.colorpicker.realm.DBRealm;
 import com.bittle.colorpicker.utils.ColorUtil;
 import com.bittle.colorpicker.utils.ImageUtil;
@@ -73,24 +71,10 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
         mainAppLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //hideFAB();
-                if (!menu.isExpanded()) {
-                    hideKeyboard();
-                    ColorInfoDialog.isActive = false;
-                    switchActivities(currentColor);
-                } else {
-                    hideFAB();
-                }
+                if (menu.isExpanded()) hideFAB(); else hideKeyboard();
             }
         });
-
-        // the edittext will only accept Hexidecimal values with a max length of 6,
-        // it will also capitalize all input
-        mainTextBox.setFilters(new InputFilter[]{
-                new RegexInputFilter.HexInputFilter(),
-                new InputFilter.AllCaps(),
-                new InputFilter.LengthFilter(6)
-        });
+        mainTextBox.setFilters(RegexInputFilter.HexInputFilter);
 
         mainTextBox.addTextChangedListener(new TextWatcher() {
 

@@ -46,6 +46,7 @@ public class ColorModel extends RealmObject {
         if(name == null){
             String new_name = ColorUtil.getClosestColor(this);
             try {
+
                 name = new_name;
             }catch (Exception e){
                 return new_name;

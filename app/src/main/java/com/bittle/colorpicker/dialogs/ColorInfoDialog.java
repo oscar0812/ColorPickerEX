@@ -18,9 +18,6 @@ import com.bittle.colorpicker.utils.StringUtil;
 
 // view with 5 circles
 public class ColorInfoDialog extends Activity {
-
-    private final float BORDER_WIDTH = 70.0f;
-
     private static String allTextViewsTogether;
     public static boolean isActive = true;
     String averageColor = "";
