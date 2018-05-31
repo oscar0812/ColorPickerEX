@@ -1,5 +1,6 @@
 package com.bittle.colorpicker;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,8 +10,8 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.text.method.TextKeyListener;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,6 +27,7 @@ import com.bittle.colorpicker.dialogs.ColorInfoDialog;
 import com.bittle.colorpicker.realm.DBRealm;
 import com.bittle.colorpicker.utils.ColorUtil;
 import com.bittle.colorpicker.utils.ImageUtil;
+import com.bittle.colorpicker.utils.RegexInputFilter;
 import com.bittle.colorpicker.utils.ScreenUtil;
 import com.bittle.colorpicker.utils.StringUtil;
 import com.flask.colorpicker.ColorPickerView;
@@ -34,6 +36,8 @@ import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+
+import java.util.Objects;
 
 public class ColorPickerMainActivity extends BaseDrawerActivity implements View.OnTouchListener {
     private RelativeLayout mainAppLayout;
@@ -46,17 +50,27 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
     // for the touch listener
     private boolean is_being_touched = false;
 
+    // onTouchEvent makes onClick vague, must add this, everything is gonna be alright
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_color_picker_main);
         FABFunctions();
         final EditText mainTextBox = findViewById(R.id.hexTextBoxConvert);
-        final TextView hexSignTextView = findViewById(R.id.hexSignTextView);
-        final RelativeLayout mainLayout = findViewById(R.id.mainRelativeLayout);
-        mainLayout.setOnTouchListener(this);
+        mainAppLayout = findViewById(R.id.mainRelativeLayout);
 
-        mainLayout.setOnClickListener(new View.OnClickListener() {
+        try {
+            // try to set the last color before app was closed
+            currentColor = Objects.requireNonNull
+                    (DBRealm.getInstance(this).findAll().first()).getColor();
+        } catch (Exception ignored) {
+        }
+
+        mainAppLayout.performClick();
+        mainAppLayout.setOnTouchListener(this);
+
+        mainAppLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //hideFAB();
@@ -70,22 +84,18 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
             }
         });
 
-        mainLayout.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                showSetWallpaperDialog(currentColor);
-                return false;
-            }
+        // the edittext will only accept Hexidecimal values with a max length of 6,
+        // it will also capitalize all input
+        mainTextBox.setFilters(new InputFilter[]{
+                new RegexInputFilter.HexInputFilter(),
+                new InputFilter.AllCaps(),
+                new InputFilter.LengthFilter(6)
         });
-
-        mainAppLayout = mainLayout;
-
 
         mainTextBox.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                //hideFAB();
             }
 
             @Override
@@ -94,34 +104,14 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
 
             @Override
             public void afterTextChanged(Editable editable) {
-                try {
-                    String str = mainTextBox.getText().toString();
-                    if (containsBadChars(str)) {
-                        changeTextInsideListener(mainTextBox, this, str);
-                    }
-
-                    if (ColorUtil.isValidHex(mainTextBox.getText().toString())) {
-                        changeTextInsideListener(mainTextBox, this,
-                                (mainTextBox.getText().toString()).toUpperCase());
-
-                        hideKeyboard();
-                        int color = Color.parseColor("#" + str);
-                        currentColor = color;
-                        mainLayout.setBackgroundColor(color);
-                        if(!is_being_touched)
-                        DBRealm.getInstance(context).insert(ColorUtil.colorToHex(color));
-                        setClosestColor(color);
-
-                        //colorTheLayout(color);
-
-                        changeColors(mainTextBox, hexSignTextView,
-                                color);
-                    }
-                } catch (Exception e) {
-                    Toast.makeText(context, "INVALID HEX", Toast.LENGTH_LONG).show();
+                String hex = editable.toString();
+                if (hex.length() == 6) {
+                    hideKeyboard();
+                    colorTheLayout(ColorUtil.hexToColor(hex), false);
                 }
             }
         });
+
         mainEditText = mainTextBox;
 
         // check if another app has sent over data
@@ -135,15 +125,6 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
         }
     }
 
-    private void changeTextInsideListener(EditText view, TextWatcher watcher, String str) {
-        view.removeTextChangedListener(watcher);
-        if (mainEditText.length() > 0) {
-            TextKeyListener.clear(view.getText());
-        }
-        view.append(fixString(str));
-        view.addTextChangedListener(watcher);
-    }
-
     private void handleSendImage(Intent intent) {
         switchActivities(intent);
     }
@@ -152,7 +133,6 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
     protected void onResume() {
         super.onResume();
         DBRealm.getInstance(this).start();
-        mainAppLayout.setBackgroundColor(currentColor);
         mainEditText.setText(ColorUtil.colorToHex(currentColor));
     }
 
@@ -176,7 +156,7 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
         return true;
     }
 
-    // when something is touched on the toolbar, such as the camera icon
+    // when something is touched on the toolbar, such as the pipette icon
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //hideFAB();
@@ -190,60 +170,27 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
         return super.onOptionsItemSelected(item);
     }
 
-
-    public boolean isLegalChar(char a) {
-        return (a >= '0' && a <= '9') || (a >= 'a' && a <= 'f') || (a >= 'A' && a <= 'F');
-    }
-
-    public void changeColors(final EditText editText, final TextView hexSign, final int color) {
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (ColorUtil.isDarkColor(color)) {
-
-                    editText.setTextColor(Color.WHITE);
-                    hexSign.setTextColor(Color.WHITE);
-                } else {
-                    // is light color
-
-                    editText.setTextColor(Color.BLACK);
-                    hexSign.setTextColor(Color.BLACK);
-                }
-            }
-        };
-        runOnUiThread(runnable);
-    }
-
-    public boolean containsBadChars(String str) {
-        for (int x = 0; x < str.length(); x++) {
-            if (!isLegalChar(str.charAt(x))) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public String fixString(String str) {
-        StringBuilder s = new StringBuilder();
-        for (int x = 0; x < str.length(); x++) {
-            if (isLegalChar(str.charAt(x))) {
-                s.append(str.charAt(x));
-            }
-        }
-        return s.toString();
-    }
-
-
-    public void colorTheLayout(int color) {
+    public void colorTheLayout(int color, boolean changeText) {
+        currentColor = color;
         mainAppLayout.setBackgroundColor(color);
-        mainEditText.setText(ColorUtil.colorToHex(color));
+
+        // to avoid infinite recursion, the onchangedtext calls this method, setting the
+        // text here will then call onchangedtext back, etc..
+        if (changeText) {
+            String hex = ColorUtil.colorToHex(color).toUpperCase();
+            if (hex.startsWith("#")) hex = hex.substring(1);
+            mainEditText.setText(hex);
+        }
         setClosestColor(color);
 
-        if(!is_being_touched) {
+        if (!is_being_touched) {
             //  write color to db
             DBRealm.getInstance(context).insert(ColorUtil.colorToHex(color));
         }
+    }
 
+    public void colorTheLayout(int color) {
+        colorTheLayout(color, true);
     }
 
     public void setClosestColor(int color) {
@@ -259,15 +206,35 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
 
         closestColorTextView.setTypeface(StringUtil.getFont(this));
 
-        if (ColorUtil.isDarkColor(color)) {
-            closestColorTextView.setTextColor(Color.WHITE);
-        } else {
-            closestColorTextView.setTextColor(Color.BLACK);
-        }
+        final TextView hexSignTextView = findViewById(R.id.hexSignTextView);
+        changeColors(mainEditText, hexSignTextView, closestColorTextView, color);
 
         closestColorTextView.setText(ColorUtil.getClosestColor(color));
     }
 
+    // change the color of textviews to be more visible
+    public void changeColors(final EditText editText, final TextView hexSign, final TextView closestColor,
+                             final int color) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (ColorUtil.isDarkColor(color)) {
+                    editText.setTextColor(Color.WHITE);
+                    hexSign.setTextColor(Color.WHITE);
+                    closestColor.setTextColor(Color.WHITE);
+                } else {
+                    // is light color
+                    editText.setTextColor(Color.BLACK);
+                    hexSign.setTextColor(Color.BLACK);
+                    closestColor.setTextColor(Color.BLACK);
+                }
+            }
+        };
+        runOnUiThread(runnable);
+    }
+
+    // switch to imagePickerActivity (is called when data is passed into this activity,
+    // maybe a picture was dragged in)
     public void switchActivities(final Intent in) {
         Intent intent = new Intent(ColorPickerMainActivity.this, ImagePickerMainActivity.class);
         if (in == null) {
@@ -276,7 +243,6 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
             Uri imageUri = in.getParcelableExtra(Intent.EXTRA_STREAM);
             intent.setData(imageUri);
         }
-
         startActivity(intent);
     }
 
@@ -329,8 +295,6 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
                 .setPositiveButton("ok", new ColorPickerClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
-                        //changeBackgroundColor(selectedColor);
-                        currentColor = selectedColor;
                         colorTheLayout(selectedColor);
 
                     }
@@ -381,13 +345,12 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
     }
 
     public void hideFAB() {
-        Runnable runnable = new Runnable() {
+        runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 menu.collapse();
             }
-        };
-        runOnUiThread(runnable);
+        });
     }
 
     public void showSetWallpaperDialog(final int color) {
@@ -424,6 +387,8 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
                 is_being_touched = true;
                 break;
             case MotionEvent.ACTION_UP:
+                // because it requires it, perform a click
+                mainAppLayout.performClick();
                 is_being_touched = false;
                 colorTheLayout(currentColor);
                 break;
