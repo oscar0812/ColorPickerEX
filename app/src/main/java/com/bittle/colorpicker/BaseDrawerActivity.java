@@ -3,6 +3,7 @@ package com.bittle.colorpicker;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -19,6 +20,8 @@ import android.widget.FrameLayout;
 @SuppressLint("Registered")
 public class BaseDrawerActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
+    static int currentColor = Color.parseColor("#EEEEEE");
+
 
     private NavigationView navigationView;
     private DrawerLayout fullLayout;
@@ -92,7 +95,7 @@ public class BaseDrawerActivity extends AppCompatActivity implements
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
-        if(clickedSameActivity(id)){
+        if (clickedSameActivity(id)) {
             // if clicked same activity don't do anything
             return true;
         }
@@ -104,6 +107,9 @@ public class BaseDrawerActivity extends AppCompatActivity implements
                 return true;
             case R.id.nav_camera:
                 startActivity(new Intent(this, ImagePickerMainActivity.class));
+                return true;
+            case R.id.nav_convert:
+                startActivity(new Intent(this, ConvertMainActivity.class));
                 return true;
             case R.id.nav_share:
                 shareApp();
