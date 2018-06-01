@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -32,7 +31,6 @@ import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorSelectedListener;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
-import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.util.Objects;
@@ -42,7 +40,6 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
     private EditText mainEditText;
     public static final int SEARCH_COMPLETE = 0;
 
-    int currentColor = Color.parseColor("#EEEEEE");
     protected static Uri imageUri = null;
 
     // for the touch listener
@@ -65,7 +62,6 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
         } catch (Exception ignored) {
         }
 
-        mainAppLayout.performClick();
         mainAppLayout.setOnTouchListener(this);
 
         mainAppLayout.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +70,7 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
                 if (menu.isExpanded()) hideFAB(); else hideKeyboard();
             }
         });
-        mainTextBox.setFilters(RegexInputFilter.HexInputFilter);
+        mainTextBox.setFilters(RegexInputFilter.HEX_FILTER);
 
         mainTextBox.addTextChangedListener(new TextWatcher() {
 
@@ -298,26 +294,17 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
     public void FABFunctions() {
         this.menu = findViewById(R.id.multiple_actions);
 
-        FloatingActionButton lookUpButton = findViewById(R.id.action_a);
-        lookUpButton.setSize(FloatingActionButton.SIZE_MINI);
-        lookUpButton.setIconDrawable(ContextCompat.getDrawable(context, R.drawable.magnify));
-
-        FloatingActionButton historyButton = findViewById(R.id.action_c);
-        historyButton.setSize(FloatingActionButton.SIZE_MINI);
-        historyButton.setIconDrawable(ContextCompat.getDrawable(context, R.drawable.letterh));
-
-        lookUpButton.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.action_a).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openSearch();
             }
         });
 
-        historyButton.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.action_c).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openHistory();
-
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -361,6 +348,7 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
     float start_y = 0;
     int start_color = 0;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         switch (motionEvent.getAction()) {
@@ -371,8 +359,6 @@ public class ColorPickerMainActivity extends BaseDrawerActivity implements View.
                 is_being_touched = true;
                 break;
             case MotionEvent.ACTION_UP:
-                // because it requires it, perform a click
-                mainAppLayout.performClick();
                 is_being_touched = false;
                 colorTheLayout(currentColor);
                 break;
