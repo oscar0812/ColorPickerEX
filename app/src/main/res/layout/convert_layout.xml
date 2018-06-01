@@ -14,6 +14,30 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         tools:context="com.bittle.colorpicker.ConvertMainActivity">
+        <TextView
+            android:id="@+id/hexSignTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/hexTextBoxConvert"
+            android:layout_alignTop="@+id/hexTextBoxConvert"
+            android:layout_toStartOf="@+id/hexTextBoxConvert"
+            android:enabled="true"
+            android:gravity="center_vertical"
+            android:text="@string/hexSign"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+        <EditText
+            android:id="@+id/hexTextBoxConvert"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="179dp"
+            android:maxLength="6"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textStyle="bold" />
 
         <com.getbase.floatingactionbutton.FloatingActionsMenu
             android:id="@+id/multiple_actions"
