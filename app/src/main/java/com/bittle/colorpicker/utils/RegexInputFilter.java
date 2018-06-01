@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  */
 public class RegexInputFilter implements InputFilter {
 
-    public static final InputFilter[] HexInputFilter = new InputFilter[] {
+    public static final InputFilter[] HEX_FILTER = new InputFilter[] {
             // Only accept Hexidecimal values with a max length of 6,
             // it will also capitalize all input
             new RegexInputFilter("[A-Fa-f0-9]*"),
