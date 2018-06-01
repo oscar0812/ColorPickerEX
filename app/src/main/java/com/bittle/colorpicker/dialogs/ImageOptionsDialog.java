@@ -19,6 +19,7 @@ import com.bittle.colorpicker.utils.ImageUtil;
  * Created by Bittle on 1/2/17.
  */
 
+// view with rotate left and right
 public class ImageOptionsDialog extends Dialog implements View.OnClickListener {
 
     public final int LENGTH_FROM_TOP = 150;
