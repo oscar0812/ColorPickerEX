@@ -29,7 +29,7 @@
             app:fab_labelStyle="@style/menu_labels_style">
 
             <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/action_a"
+                android:id="@+id/action_aa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:fab_colorNormal="@color/white"
@@ -37,14 +37,14 @@
                 app:fab_title="Integer" />
 
             <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/action_b"
+                android:id="@+id/action_bb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:fab_colorNormal="@color/white"
                 app:fab_colorPressed="@color/white_pressed"
                 app:fab_title="Rgb" />
             <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/action_c"
+                android:id="@+id/action_cc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:fab_colorNormal="@color/white"
@@ -52,7 +52,7 @@
                 app:fab_title="Smali" />
 
             <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/action_d"
+                android:id="@+id/action_dd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:fab_colorNormal="@color/white"
