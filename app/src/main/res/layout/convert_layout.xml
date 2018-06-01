@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -13,32 +9,78 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="com.bittle.colorpicker.ConvertMainActivity">
-        <TextView
-            android:id="@+id/hexSignTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/hexTextBoxConvert"
-            android:layout_alignTop="@+id/hexTextBoxConvert"
-            android:layout_toStartOf="@+id/hexTextBoxConvert"
-            android:enabled="true"
-            android:gravity="center_vertical"
-            android:text="@string/hexSign"
-            android:textColor="#000000"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+        tools:context="com.bittle.colorpicker.ConvertMainActivity"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
         <EditText
             android:id="@+id/hexTextBoxConvert"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="179dp"
+            android:layout_marginTop="32dp"
             android:maxLength="6"
             android:textAlignment="center"
             android:textColor="#000000"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/hexTextBoxConvert"
+            android:layout_centerHorizontal="true"
+            android:text="TextView"
+            android:textSize="18sp"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@color/dark_grey"
+            android:gravity="center"
+            tools:textAlignment="center"
+            android:textAlignment="center"
+            android:layout_marginTop="10dp" />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="TextView"
+            android:textSize="18sp"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@color/dark_grey"
+            android:gravity="center"
+            tools:textAlignment="center"
+            android:textAlignment="center" />
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="TextView"
+            android:textSize="18sp"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@color/dark_grey"
+            android:gravity="center"
+            tools:textAlignment="center"
+            android:textAlignment="center" />
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView3"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="TextView"
+            android:textSize="18sp"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@color/dark_grey"
+            android:gravity="center"
+            tools:textAlignment="center"
+            android:textAlignment="center"/>
         <com.getbase.floatingactionbutton.FloatingActionsMenu
             android:id="@+id/multiple_actions"
             android:layout_width="wrap_content"
@@ -53,36 +95,24 @@
             app:fab_labelStyle="@style/menu_labels_style">
 
             <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/action_aa"
+                android:id="@+id/action_a"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:fab_colorNormal="@color/white"
                 app:fab_colorPressed="@color/white_pressed"
-                app:fab_title="Integer" />
+                app:fab_title="Smali"
+                app:fab_size="mini"
+                app:fab_icon="@drawable/android"/>
 
             <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/action_bb"
+                android:id="@+id/action_b"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:fab_colorNormal="@color/white"
                 app:fab_colorPressed="@color/white_pressed"
-                app:fab_title="Rgb" />
-            <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/action_cc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:fab_colorNormal="@color/white"
-                app:fab_colorPressed="@color/white_pressed"
-                app:fab_title="Smali" />
-
-            <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/action_dd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:fab_colorNormal="@color/white"
-                app:fab_colorPressed="@color/white_pressed"
-                app:fab_title="Orgin" />
+                app:fab_title="Integer"
+                app:fab_size="mini"
+                app:fab_icon="@drawable/number"/>
 
         </com.getbase.floatingactionbutton.FloatingActionsMenu>
     </RelativeLayout>
-</android.support.constraint.ConstraintLayout>
